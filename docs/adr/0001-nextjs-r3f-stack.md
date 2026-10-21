@@ -1,6 +1,6 @@
 # ADR 0001 — Next.js + React Three Fiber stack
 
-Status: **Proposed** — drafted by Claude, 2026-10-21; awaiting Daniel's acceptance
+Status: **Accepted** — Daniel, 2026-10-21 (drafted by Claude)
 Related: docs/plan.md §9, docs/workflow.md §3, docs/specs/sprint-0-foundation.md
 
 ## Context
@@ -30,6 +30,17 @@ The portfolio is a mostly static, content-heavy, mobile-first site (home, four c
 | Hosting | **Vercel**: a preview per PR, production from `main` |
 
 Versions: the latest stable release of each tool at the start of S2, recorded in `package.json` and the lockfile.
+
+### Versions pinned in S2 (2026-10-21)
+
+| Tool | Version | Note |
+|---|---|---|
+| Node.js | 24 (`.nvmrc`, `engines` `24.x`, CI) | No line was in Active LTS that day: 24 went to Maintenance LTS on 2026-10-20 (supported until 2028-04-30), and 26 becomes Active LTS on 2026-10-28. Daniel chose 24, with the move to 26 in its own `chore/` PR. |
+| pnpm | 12.14.0 (`packageManager`) | Through corepack. `engineStrict` on, so a wrong Node version fails the install. |
+| Next.js | 16.4.2 | Turbopack. `cacheComponents` + `partialPrefetching` as in the create-next-app template; `agentRules: false` so `next dev` doesn't write `AGENTS.md` (agent context lives in `CLAUDE.md`). |
+| React | 19.3.1 | |
+| TypeScript | 5.9.3 | 7.x is out, but create-next-app 16.4.2 still targets `^5`. Revisit in its own PR. |
+| Tailwind CSS | 4.3.3 | CSS-first config, loaded through `@tailwindcss/turbopack` (the template default) instead of PostCSS. |
 
 ## Alternatives considered
 

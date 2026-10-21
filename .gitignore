@@ -4,6 +4,29 @@ docs/private/
 # Secrets
 .env*
 !.env.example
+*.pem
+
+# Raw 3D/source assets (processed output lives in public/)
+assets-raw/
+
+# Dependencies
+node_modules/
+
+# Next.js / Vercel build output
+.next/
+out/
+.vercel/
+next-env.d.ts
+*.tsbuildinfo
+
+# Test and audit output
+coverage/
+test-results/
+playwright-report/
+.lighthouseci/
+
+# Logs
+*.log
 
 # OS / editor
 .DS_Store
