@@ -9,7 +9,7 @@ describe("home page stub", () => {
 
     const headings = screen.getAllByRole("heading", { level: 1 });
     expect(headings).toHaveLength(1);
-    expect(headings[0]?.textContent).toBe("Proof of red");
+    expect(headings[0]?.textContent).toBe("Daniel Dominic");
   });
 
   it("wraps the content in a main landmark", () => {
