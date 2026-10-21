@@ -63,13 +63,13 @@ Optimize for recruiting, with a secondary contact path for consulting (the final
 
 ### Proof points for the home page
 
-| Proof point | Display | Evidence / interpretation |
-|---|---|---|
-| Experience | **7+ years** | Resume summary and career history |
-| App scale | **500K+ downloads** | FinTech/tax app built at Quintet; do not imply across all apps |
-| Product ownership | **End-to-end Android** | CASABOT and BeVigil Android ownership |
-| Specialized expertise | **AR/XR engineering** | ARCore, Filament, OpenGL/EGL, Unity and Meta Quest work |
-| Engineering breadth | **Mobile · Backend · XR** | Android, Flutter, Python/FastAPI, MongoDB, React/TypeScript |
+| Proof point           | Display                   | Evidence / interpretation                                      |
+| --------------------- | ------------------------- | -------------------------------------------------------------- |
+| Experience            | **7+ years**              | Resume summary and career history                              |
+| App scale             | **500K+ downloads**       | FinTech/tax app built at Quintet; do not imply across all apps |
+| Product ownership     | **End-to-end Android**    | CASABOT and BeVigil Android ownership                          |
+| Specialized expertise | **AR/XR engineering**     | ARCore, Filament, OpenGL/EGL, Unity and Meta Quest work        |
+| Engineering breadth   | **Mobile · Backend · XR** | Android, Flutter, Python/FastAPI, MongoDB, React/TypeScript    |
 
 **Claims policy:** Only use outcomes supported by the resume or later independently verified. Do not invent performance improvements, revenue, user retention, team size, client names, or app ratings.
 
@@ -78,7 +78,7 @@ Optimize for recruiting, with a secondary contact path for consulting (the final
 - Clear, technically confident, succinct, and specific.
 - First person for personal introductions; straightforward case-study writing for projects.
 - No exaggerated phrases such as “world-class,” “10x engineer,” or “revolutionary.”
-- Explain *why* a design decision was made, not just *what* framework was used.
+- Explain _why_ a design decision was made, not just _what_ framework was used.
 - Use strong verbs: **architected, built, shipped, migrated, integrated, optimized, validated**.
 
 ---
@@ -104,16 +104,16 @@ Retain **Concept 2 — Minimalist Product Engineer** as a light-theme alternativ
 
 ### Suggested design tokens
 
-| Token | Value | Usage |
-|---|---|---|
-| `--bg` | `#0C1324` | Main background |
-| `--surface` | `#19253B` | Cards and secondary panels |
-| `--surface-alt` | `#192B48` | Elevated sections |
-| `--accent` | `#547CF3` | Links, highlights, selected states |
-| `--accent-soft` | `#B8CCF7` | Fine accents and highlights |
-| `--text` | `#F8FAFC` | Main text |
-| `--text-muted` | `#AABAD1` | Supporting text |
-| `--border` | `#37475E` | Outlines and separators |
+| Token           | Value     | Usage                              |
+| --------------- | --------- | ---------------------------------- |
+| `--bg`          | `#0C1324` | Main background                    |
+| `--surface`     | `#19253B` | Cards and secondary panels         |
+| `--surface-alt` | `#192B48` | Elevated sections                  |
+| `--accent`      | `#547CF3` | Links, highlights, selected states |
+| `--accent-soft` | `#B8CCF7` | Fine accents and highlights        |
+| `--text`        | `#F8FAFC` | Main text                          |
+| `--text-muted`  | `#AABAD1` | Supporting text                    |
+| `--border`      | `#37475E` | Outlines and separators            |
 
 These are **starting values**, not mandatory final colors. Adjust to pass contrast tests.
 
@@ -138,14 +138,14 @@ These are **starting values**, not mandatory final colors. Adjust to pass contra
 
 **Idea:** the portfolio's "world" is a small, low-poly developer desk. Visitors explore it like an object, not a game level.
 
-| Scene object | Opens | Why it fits |
-|---|---|---|
-| Phone on a stand | Featured work (Android projects) | Android specialist first |
-| Headset | Nexus 3D / immersive work | AR/XR breadth |
-| Monitor | Architecture Explorer (Lab 02) | Engineering depth, reused inside the scene |
-| Smart-home hub / small robot | CASABOT case study | Flagship project |
-| Notebook | About + timeline | Story |
-| Mail tray | Contact + resume | Conversion |
+| Scene object                 | Opens                            | Why it fits                                |
+| ---------------------------- | -------------------------------- | ------------------------------------------ |
+| Phone on a stand             | Featured work (Android projects) | Android specialist first                   |
+| Headset                      | Nexus 3D / immersive work        | AR/XR breadth                              |
+| Monitor                      | Architecture Explorer (Lab 02)   | Engineering depth, reused inside the scene |
+| Smart-home hub / small robot | CASABOT case study               | Flagship project                           |
+| Notebook                     | About + timeline                 | Story                                      |
+| Mail tray                    | Contact + resume                 | Conversion                                 |
 
 **Controls**
 
@@ -254,12 +254,12 @@ Prefer contextual labels over claims like “millions of users impacted.”
 
 Grid of four projects, with top priority to CASABOT and BeVigil:
 
-| Order | Project | One-line angle |
-|---|---|---|
-| 1 | **CASABOT** | AI-powered smart-home Android platform with custom AR rendering |
-| 2 | **BeVigil** | Mobile security intelligence, LLM summaries, and backend integration |
-| 3 | **My Tax India** | Production tax/FinTech Android app with 500K+ downloads |
-| 4 | **Nexus 3D** | Immersive VR product showcase / 3D experience |
+| Order | Project          | One-line angle                                                       |
+| ----- | ---------------- | -------------------------------------------------------------------- |
+| 1     | **CASABOT**      | AI-powered smart-home Android platform with custom AR rendering      |
+| 2     | **BeVigil**      | Mobile security intelligence, LLM summaries, and backend integration |
+| 3     | **My Tax India** | Production tax/FinTech Android app with 500K+ downloads              |
+| 4     | **Nexus 3D**     | Immersive VR product showcase / 3D experience                        |
 
 **Card fields:** project title, one-line purpose, 3–5 relevant tags, cover media, `Read Case Study`.
 
@@ -369,7 +369,7 @@ Support hiring, open-source collaborations, and relevant project inquiries witho
 
 `Mobile security intelligence for a dataset covering 1M+ Play Store applications.`
 
-*Important:* This describes the **dataset**, not 1M+ BeVigil app users or installs.
+_Important:_ This describes the **dataset**, not 1M+ BeVigil app users or installs.
 
 ### 6.3 My Tax India — scale and production experience
 
@@ -449,7 +449,7 @@ Clicking/tapping a node reveals:
 
 - What that layer owns.
 - Its dependency direction.
-- A short, representative *public demo code* snippet.
+- A short, representative _public demo code_ snippet.
 - Test boundaries or typical failure modes.
 
 Add a visible note that the diagram is illustrative unless confirmed to be exactly representative of a production codebase.
@@ -514,24 +514,24 @@ Include sample public-safe examples of:
 
 ### Experience timeline
 
-| Dates (per resume) | Company | Role / showcase angle |
-|---|---|---|
-| Jan 2026–present | CASABOT Technology Ltd (via InsourceIndia) | Senior Android Developer — sole Android ownership, AR and releases |
-| Jun 2022–Jul 2025 | CloudSEK | SDE II — BeVigil, backend, Flutter, LLM and VR experiments |
-| May 2019–May 2022 | Quintet Solutions | Software Engineer (Android) — multi-domain production apps and scale |
-| Aug 2018–Feb 2019 | Seven Seas High Tech Systems | Android Developer — location tracking, performance and 100+ bug fixes |
+| Dates (per resume) | Company                                    | Role / showcase angle                                                 |
+| ------------------ | ------------------------------------------ | --------------------------------------------------------------------- |
+| Jan 2026–present   | CASABOT Technology Ltd (via InsourceIndia) | Senior Android Developer — sole Android ownership, AR and releases    |
+| Jun 2022–Jul 2025  | CloudSEK                                   | SDE II — BeVigil, backend, Flutter, LLM and VR experiments            |
+| May 2019–May 2022  | Quintet Solutions                          | Software Engineer (Android) — multi-domain production apps and scale  |
+| Aug 2018–Feb 2019  | Seven Seas High Tech Systems               | Android Developer — location tracking, performance and 100+ bug fixes |
 
 ### Skills: evidence-based groups
 
-| Group | Skills to display | Presentation rule |
-|---|---|---|
-| **Core Android** | Kotlin, Java, Compose, XML, Coroutines, Flow, Room, Hilt, Navigation | Largest visual emphasis |
-| **Architecture** | MVVM, Clean Architecture, use cases, modular patterns, testing | Back with example diagrams |
-| **Immersive** | ARCore, Filament, EGL/OpenGL, Unity, Meta Quest | Back with actual demos |
-| **Backend & realtime** | Python, FastAPI, MongoDB, REST, WebSockets | Show through BeVigil and CASABOT |
-| **Cross-platform & web** | Flutter, Dart, React, TypeScript | Secondary emphasis |
-| **Quality & delivery** | Firebase, Crashlytics, CI/CD, GitHub Actions, Play Store | Tie to production ownership |
-| **AI-augmented SDLC** | Claude Code, MCP, Konsist, detekt, ADRs | Show guardrails and examples |
+| Group                    | Skills to display                                                    | Presentation rule                |
+| ------------------------ | -------------------------------------------------------------------- | -------------------------------- |
+| **Core Android**         | Kotlin, Java, Compose, XML, Coroutines, Flow, Room, Hilt, Navigation | Largest visual emphasis          |
+| **Architecture**         | MVVM, Clean Architecture, use cases, modular patterns, testing       | Back with example diagrams       |
+| **Immersive**            | ARCore, Filament, EGL/OpenGL, Unity, Meta Quest                      | Back with actual demos           |
+| **Backend & realtime**   | Python, FastAPI, MongoDB, REST, WebSockets                           | Show through BeVigil and CASABOT |
+| **Cross-platform & web** | Flutter, Dart, React, TypeScript                                     | Secondary emphasis               |
+| **Quality & delivery**   | Firebase, Crashlytics, CI/CD, GitHub Actions, Play Store             | Tie to production ownership      |
+| **AI-augmented SDLC**    | Claude Code, MCP, Konsist, detekt, ADRs                              | Show guardrails and examples     |
 
 Avoid numeric self-ratings like `Kotlin 95%`. They are subjective and do not prove proficiency.
 
@@ -541,20 +541,20 @@ Avoid numeric self-ratings like `Kotlin 95%`. They are subjective and do not pro
 
 ### Recommended stack
 
-| Concern | Tool | Reason |
-|---|---|---|
-| Web app | **Next.js + TypeScript** | SEO-friendly routes, strong React ecosystem, typed data |
-| Styling | **Tailwind CSS** | Fast consistent responsive styling |
-| Components | **Accessible custom components / Radix primitives** | Robust keyboard, focus and dialog/menu behavior |
-| Motion | **Motion** | Controlled interactions and enter transitions |
-| 3D visuals | **React Three Fiber + Three.js + drei** | Interactive browser 3D for `/explore` and the Lab; `drei` gives camera controls, loaders, `Html` panels |
-| 3D assets **[v1.1]** | **Licensed low-poly asset packs** (CC0-first: Kenney, Quaternius, Poly Pizza) + **Poly Haven HDRI** environment | Decided: no custom Blender modeling for v1; assemble the desk from packs. See `docs/workflow.md` §7 |
-| 3D asset pipeline **[v1.1]** | **gltf-transform** (Meshopt/Draco, KTX2 textures) | Keep the scene within the mobile budget |
-| Camera transitions **[v1.1]** | `drei` `CameraControls` or GSAP | Smooth tap-to-focus moves |
-| Editorial content | **MDX** | Version-controlled long-form case studies |
-| Icons | **Lucide** | Consistent, lightweight technical icons |
-| Hosting | **Vercel** | Straightforward Next.js deployment |
-| Analytics | **Privacy-aware analytics** | Evaluate CTA and case-study engagement |
+| Concern                       | Tool                                                                                                            | Reason                                                                                                  |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Web app                       | **Next.js + TypeScript**                                                                                        | SEO-friendly routes, strong React ecosystem, typed data                                                 |
+| Styling                       | **Tailwind CSS**                                                                                                | Fast consistent responsive styling                                                                      |
+| Components                    | **Accessible custom components / Radix primitives**                                                             | Robust keyboard, focus and dialog/menu behavior                                                         |
+| Motion                        | **Motion**                                                                                                      | Controlled interactions and enter transitions                                                           |
+| 3D visuals                    | **React Three Fiber + Three.js + drei**                                                                         | Interactive browser 3D for `/explore` and the Lab; `drei` gives camera controls, loaders, `Html` panels |
+| 3D assets **[v1.1]**          | **Licensed low-poly asset packs** (CC0-first: Kenney, Quaternius, Poly Pizza) + **Poly Haven HDRI** environment | Decided: no custom Blender modeling for v1; assemble the desk from packs. See `docs/workflow.md` §7     |
+| 3D asset pipeline **[v1.1]**  | **gltf-transform** (Meshopt/Draco, KTX2 textures)                                                               | Keep the scene within the mobile budget                                                                 |
+| Camera transitions **[v1.1]** | `drei` `CameraControls` or GSAP                                                                                 | Smooth tap-to-focus moves                                                                               |
+| Editorial content             | **MDX**                                                                                                         | Version-controlled long-form case studies                                                               |
+| Icons                         | **Lucide**                                                                                                      | Consistent, lightweight technical icons                                                                 |
+| Hosting                       | **Vercel**                                                                                                      | Straightforward Next.js deployment                                                                      |
+| Analytics                     | **Privacy-aware analytics**                                                                                     | Evaluate CTA and case-study engagement                                                                  |
 
 A CMS is unnecessary for the initial version unless Daniel expects non-developers to edit content.
 
@@ -665,12 +665,12 @@ All displayed metrics must have a source or editorial verification note.
 
 ### Mobile-first layout
 
-| Breakpoint | Intent |
-|---|---|
-| Small mobile | Single-column flow; quick CTA access; static 3D preview if needed |
-| Large mobile / tablet | Flexible 1–2 column cards; readable diagrams |
-| Desktop | Split hero, 2-column featured work, optional sticky contents |
-| Wide desktop | Restrained max-width; do not stretch paragraphs edge to edge |
+| Breakpoint            | Intent                                                            |
+| --------------------- | ----------------------------------------------------------------- |
+| Small mobile          | Single-column flow; quick CTA access; static 3D preview if needed |
+| Large mobile / tablet | Flexible 1–2 column cards; readable diagrams                      |
+| Desktop               | Split hero, 2-column featured work, optional sticky contents      |
+| Wide desktop          | Restrained max-width; do not stretch paragraphs edge to edge      |
 
 ### Accessibility minimums
 
@@ -704,15 +704,15 @@ All displayed metrics must have a source or editorial verification note.
 
 ### [v1.1] 3D Workspace budget (mid-range Android is the reference device)
 
-| Metric | Target |
-|---|---|
-| Total scene download | ≤ 5 MB (GLB + textures), loaded only on `/explore` |
-| Draw calls | ≤ 100 (merge meshes, texture atlases) |
-| Triangles | ≤ ~150K |
-| Lighting | Baked into textures; at most one cheap real-time light |
-| Frame rate | Steady 60 fps target, 30 fps acceptable floor |
-| Pixel ratio | Capped at 2 (`dpr={[1, 2]}`), adaptive drop when frames are slow |
-| Time to first interaction | Poster image instantly; scene interactive in ≤ 3 s on 4G |
+| Metric                    | Target                                                           |
+| ------------------------- | ---------------------------------------------------------------- |
+| Total scene download      | ≤ 5 MB (GLB + textures), loaded only on `/explore`               |
+| Draw calls                | ≤ 100 (merge meshes, texture atlases)                            |
+| Triangles                 | ≤ ~150K                                                          |
+| Lighting                  | Baked into textures; at most one cheap real-time light           |
+| Frame rate                | Steady 60 fps target, 30 fps acceptable floor                    |
+| Pixel ratio               | Capped at 2 (`dpr={[1, 2]}`), adaptive drop when frames are slow |
+| Time to first interaction | Poster image instantly; scene interactive in ≤ 3 s on 4G         |
 
 Render on demand (no continuous loop when idle) to save battery.
 
@@ -840,22 +840,22 @@ Tracked in the private notes and resolved during Phase 0. The production domain 
 
 ## 14. MVP scope vs future scope
 
-| Feature | MVP | Later |
-|---|:---:|:---:|
-| Dark responsive design system | ✓ | |
-| Home page with credible proof points | ✓ | |
-| Featured work cards | ✓ | |
-| CASABOT and BeVigil detailed case studies | ✓ | |
-| My Tax India and Nexus 3D pages | ✓ | |
-| Resume, contact, social links | ✓ | |
-| Career timeline and grouped skills | ✓ | |
-| Architecture Explorer demo | Optional MVP+ | ✓ |
-| 3D Workspace at `/explore` **[v1.1]** | | ✓ (first post-launch feature) |
-| Browser-based 3D viewer | | ✓ |
-| AI engineering workflow demo | | ✓ |
-| Compose demo library | | ✓ |
-| Technical blog and tutorials | | ✓ |
-| CMS, multilingual site or complex admin | | Only if needed |
+| Feature                                   |      MVP      |             Later             |
+| ----------------------------------------- | :-----------: | :---------------------------: |
+| Dark responsive design system             |       ✓       |                               |
+| Home page with credible proof points      |       ✓       |                               |
+| Featured work cards                       |       ✓       |                               |
+| CASABOT and BeVigil detailed case studies |       ✓       |                               |
+| My Tax India and Nexus 3D pages           |       ✓       |                               |
+| Resume, contact, social links             |       ✓       |                               |
+| Career timeline and grouped skills        |       ✓       |                               |
+| Architecture Explorer demo                | Optional MVP+ |               ✓               |
+| 3D Workspace at `/explore` **[v1.1]**     |               | ✓ (first post-launch feature) |
+| Browser-based 3D viewer                   |               |               ✓               |
+| AI engineering workflow demo              |               |               ✓               |
+| Compose demo library                      |               |               ✓               |
+| Technical blog and tutorials              |               |               ✓               |
+| CMS, multilingual site or complex admin   |               |        Only if needed         |
 
 **Delivery rule:** Strong content and clear navigation matter more than shipping several incomplete interactive demos.
 
@@ -866,22 +866,26 @@ Tracked in the private notes and resolved during Phase 0. The production domain 
 The first public version should pass these checks:
 
 **Messaging**
+
 - [ ] Visitor can identify Daniel as a senior native Android engineer immediately.
 - [ ] Breadth in AR/XR, backend and Flutter is visible without dominating Android expertise.
 - [ ] Experience and quantitative claims are properly scoped and verified.
 
 **Projects**
+
 - [ ] CASABOT demonstrates architectural ownership and AR specialization.
 - [ ] BeVigil shows mobile, backend and cross-platform engineering.
 - [ ] My Tax India shows production delivery/scale without invented performance metrics.
 - [ ] Nexus 3D is clearly labeled and not conflated with another VR prototype.
 
 **Experience**
+
 - [ ] The timeline correctly reflects the resume.
 - [ ] A working resume download and professional links are present.
 - [ ] Contact action requires minimal effort.
 
 **Engineering and UX**
+
 - [ ] Navigation works with keyboard and mobile touch.
 - [ ] 3D or motion never prevents access to content.
 - [ ] **[v1.1]** `/explore` meets the 3D budget on a mid-range Android phone and always offers List view.
@@ -905,4 +909,4 @@ The first public version should pass these checks:
 
 ---
 
-*End of document.*
+_End of document._

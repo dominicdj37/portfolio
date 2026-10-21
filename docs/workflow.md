@@ -1,6 +1,6 @@
 # Daniel Dominic Portfolio — Agentic Development Workflow
 
-> **Companion to:** `docs/plan.md` (v1.1) (the *what*). This document is the *how*.  
+> **Companion to:** `docs/plan.md` (v1.1) (the _what_). This document is the _how_.  
 > **Version:** 1.1 — 21 October 2026 (Sprint 0 decisions applied; see `docs/specs/sprint-0-foundation.md`)  
 > **Primary dev agent:** Claude Code  
 > **Human role:** Daniel — product owner, architect, reviewer, and the only one who merges and ships.
@@ -44,43 +44,43 @@ flowchart LR
   N --> A
 ```
 
-| Stage | Who | Output | Exit condition |
-|---|---|---|---|
-| 1. Backlog | Daniel (Claude drafts) | GitHub issue with goal + link to plan section | Issue is small enough for one PR |
-| 2. Spec | Claude drafts (`/spec`; may plan in plan mode, writes the file after leaving it), Daniel edits | `docs/specs/<feature>.md` with `Status: Draft` | Daniel sets `Status: Approved` |
-| 3. Branch | Claude | `feat/<feature>` branch or git worktree | Clean tree, up to date with `main` |
-| 4. Tests first | Claude | Failing unit / component / e2e tests from the criteria | Tests fail for the right reason |
-| 5. Implement | Claude | Code in small commits | Tests pass locally |
-| 6. Local gates | Hooks (automatic) | Format, lint, typecheck, unit tests | All green |
-| 7. Self-review | `/self-review` → `reviewer` subagent | Review notes, fixes applied | No blocking findings |
-| 8. PR | Claude | PR with template filled, screenshots | CI triggered |
-| 9. CI + preview | GitHub Actions + Vercel | Gate results, preview URL | All required checks green |
-| 10. Human review | Daniel | Approve / request changes | Diff read, preview checked on phone |
-| 11. Merge + deploy | Daniel | Squash merge → production | Post-deploy smoke test passes |
-| 12. Learn | Daniel + Claude | Retro note, `CLAUDE.md` / spec updates | Lessons written back into the repo |
+| Stage              | Who                                                                                            | Output                                                 | Exit condition                      |
+| ------------------ | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------- |
+| 1. Backlog         | Daniel (Claude drafts)                                                                         | GitHub issue with goal + link to plan section          | Issue is small enough for one PR    |
+| 2. Spec            | Claude drafts (`/spec`; may plan in plan mode, writes the file after leaving it), Daniel edits | `docs/specs/<feature>.md` with `Status: Draft`         | Daniel sets `Status: Approved`      |
+| 3. Branch          | Claude                                                                                         | `feat/<feature>` branch or git worktree                | Clean tree, up to date with `main`  |
+| 4. Tests first     | Claude                                                                                         | Failing unit / component / e2e tests from the criteria | Tests fail for the right reason     |
+| 5. Implement       | Claude                                                                                         | Code in small commits                                  | Tests pass locally                  |
+| 6. Local gates     | Hooks (automatic)                                                                              | Format, lint, typecheck, unit tests                    | All green                           |
+| 7. Self-review     | `/self-review` → `reviewer` subagent                                                           | Review notes, fixes applied                            | No blocking findings                |
+| 8. PR              | Claude                                                                                         | PR with template filled, screenshots                   | CI triggered                        |
+| 9. CI + preview    | GitHub Actions + Vercel                                                                        | Gate results, preview URL                              | All required checks green           |
+| 10. Human review   | Daniel                                                                                         | Approve / request changes                              | Diff read, preview checked on phone |
+| 11. Merge + deploy | Daniel                                                                                         | Squash merge → production                              | Post-deploy smoke test passes       |
+| 12. Learn          | Daniel + Claude                                                                                | Retro note, `CLAUDE.md` / spec updates                 | Lessons written back into the repo  |
 
 ---
 
 ## 3. Toolchain
 
-| Concern | Tool | Notes |
-|---|---|---|
-| Framework | Next.js (App Router) + TypeScript (strict) | Per plan §9 |
-| Package manager | pnpm | Fast, strict dependency resolution |
-| Styling / UI | Tailwind CSS, Radix primitives, Motion | Per plan |
-| 3D | React Three Fiber, drei, Three.js | Dynamic import, `ssr: false` |
-| Lint / format | ESLint + Prettier | Run by hooks and CI |
-| Unit / component tests | Vitest + Testing Library | Fast feedback for the agent loop |
-| End-to-end | Playwright | Projects for Pixel-class Android, iPhone, desktop |
-| Visual regression | Playwright screenshots (`toHaveScreenshot`) | From Phase 1. Baselines generated on Linux, updated only by the Daniel-triggered `update-snapshots` workflow |
-| Accessibility | `@axe-core/playwright` | Fails on serious/critical violations |
-| Performance | Lighthouse CI | Mobile budgets per route, run against a local production build in CI |
-| Bundle size | Lighthouse CI script-size assertion; `@next/bundle-analyzer` for diagnosis | Fails if JS budget exceeded; analyzer added when first needed |
-| 3D asset checks | `gltf-transform` CLI + custom budget script | Size, triangles, textures per `/explore` budget |
-| Links / content | Link checker + claims check script | Catches dead Play Store / LinkedIn links |
-| CI | GitHub Actions | Required checks on every PR |
-| Hosting | Vercel | Preview deploy per PR, production on `main` |
-| Source of truth | GitHub (issues, PRs, projects board) | Backlog and history in one place |
+| Concern                | Tool                                                                       | Notes                                                                                                        |
+| ---------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Framework              | Next.js (App Router) + TypeScript (strict)                                 | Per plan §9                                                                                                  |
+| Package manager        | pnpm                                                                       | Fast, strict dependency resolution                                                                           |
+| Styling / UI           | Tailwind CSS, Radix primitives, Motion                                     | Per plan                                                                                                     |
+| 3D                     | React Three Fiber, drei, Three.js                                          | Dynamic import, `ssr: false`                                                                                 |
+| Lint / format          | ESLint + Prettier                                                          | Run by hooks and CI                                                                                          |
+| Unit / component tests | Vitest + Testing Library                                                   | Fast feedback for the agent loop                                                                             |
+| End-to-end             | Playwright                                                                 | Projects for Pixel-class Android, iPhone, desktop                                                            |
+| Visual regression      | Playwright screenshots (`toHaveScreenshot`)                                | From Phase 1. Baselines generated on Linux, updated only by the Daniel-triggered `update-snapshots` workflow |
+| Accessibility          | `@axe-core/playwright`                                                     | Fails on serious/critical violations                                                                         |
+| Performance            | Lighthouse CI                                                              | Mobile budgets per route, run against a local production build in CI                                         |
+| Bundle size            | Lighthouse CI script-size assertion; `@next/bundle-analyzer` for diagnosis | Fails if JS budget exceeded; analyzer added when first needed                                                |
+| 3D asset checks        | `gltf-transform` CLI + custom budget script                                | Size, triangles, textures per `/explore` budget                                                              |
+| Links / content        | Link checker + claims check script                                         | Catches dead Play Store / LinkedIn links                                                                     |
+| CI                     | GitHub Actions                                                             | Required checks on every PR                                                                                  |
+| Hosting                | Vercel                                                                     | Preview deploy per PR, production on `main`                                                                  |
+| Source of truth        | GitHub (issues, PRs, projects board)                                       | Backlog and history in one place                                                                             |
 
 ---
 
@@ -115,17 +115,20 @@ portfolio/
 # Portfolio — project guide for Claude
 
 ## What this is
+
 Personal portfolio for Daniel Dominic (senior Android engineer). Plan: docs/plan.md.
 Mobile-first. Content is 2D and must never depend on WebGL. 3D lives at /explore only.
 
 ## Commands
+
 - pnpm dev | pnpm build | pnpm lint | pnpm typecheck
 - pnpm test (Vitest) | pnpm e2e (Playwright) | pnpm e2e:mobile
-- pnpm verify   # format:check, lint, typecheck, test, build, e2e
-- pnpm verify:full   # verify + Lighthouse CI
+- pnpm verify # format:check, lint, typecheck, test, build, e2e
+- pnpm verify:full # verify + Lighthouse CI
 - Phase 4, not yet available: pnpm assets:optimize | pnpm assets:check
 
 ## Rules
+
 - Work only from a spec in docs/specs/ marked `Status: Approved`. Only Daniel sets that.
   If none exists, write one with `Status: Draft` and stop.
 - Write or update tests before implementation. Never delete or skip a failing test to get green.
@@ -135,12 +138,14 @@ Mobile-first. Content is 2D and must never depend on WebGL. 3D lives at /explore
 - Keep PRs small: one spec per PR.
 
 ## Never
+
 - Push to main, merge PRs, or deploy to production.
 - Update visual-regression baselines. Daniel runs the update-snapshots workflow.
 - Commit anything from assets-raw/, .env*, or employer-confidential material.
 - Add camera/AR (getUserMedia, WebXR) features — out of scope.
 
 ## Definition of done
+
 Spec criteria covered by tests · pnpm verify green · /self-review clean ·
 PR template complete with mobile screenshots.
 ```
@@ -149,24 +154,29 @@ PR template complete with mobile screenshots.
 
 ```markdown
 # <Feature name>
-Plan reference: docs/plan.md §<section>   Issue: #<n>
-Status: **Draft**   <!-- only Daniel changes this to Approved -->
+
+Plan reference: docs/plan.md §<section> Issue: #<n>
+Status: **Draft** <!-- only Daniel changes this to Approved -->
 
 ## Goal
+
 One or two sentences: what the visitor can do after this ships.
 
 ## Scope / Out of scope
 
 ## Acceptance criteria (each becomes ≥1 test)
+
 - [ ] AC1 …
 - [ ] AC2 …
 
 ## UX notes (mobile first)
 
 ## Technical approach
+
 Components, data, routes. Link an ADR if a real decision is made.
 
 ## Test plan
+
 Unit · component · e2e (which viewports) · a11y · perf budget touched?
 
 ## Risks / open questions
@@ -190,36 +200,36 @@ Write a short ADR (context → decision → consequences) whenever a choice woul
 
 ### 5.2 Hooks (deterministic guardrails)
 
-| Hook | Trigger | Action |
-|---|---|---|
-| Format on write | `PostToolUse` on Edit/Write of `*.ts(x)`, `*.md(x)`, `*.css` | Run Prettier + ESLint `--fix` on that file; report remaining errors back to Claude |
-| Protected paths | `PreToolUse` on Edit/Write | Block writes to `.env*`, `assets-raw/`, visual baselines, `public/resume/`; explain why |
-| Done check | `Stop` | Run `pnpm typecheck && pnpm test --changed`; if red, tell Claude to keep going instead of finishing |
-| Session context | `SessionStart` | Print current branch, open spec, and `git status` so each session starts oriented |
+| Hook            | Trigger                                                      | Action                                                                                              |
+| --------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Format on write | `PostToolUse` on Edit/Write of `*.ts(x)`, `*.md(x)`, `*.css` | Run Prettier + ESLint `--fix` on that file; report remaining errors back to Claude                  |
+| Protected paths | `PreToolUse` on Edit/Write                                   | Block writes to `.env*`, `assets-raw/`, visual baselines, `public/resume/`; explain why             |
+| Done check      | `Stop`                                                       | Run `pnpm typecheck && pnpm test --changed`; if red, tell Claude to keep going instead of finishing |
+| Session context | `SessionStart`                                               | Print current branch, open spec, and `git status` so each session starts oriented                   |
 
 ### 5.3 Subagents (`.claude/agents/`)
 
-| Agent | Tools | Job |
-|---|---|---|
-| `reviewer` | Read-only + run tests | Reviews the branch diff against the spec, ADRs and `CLAUDE.md`; flags bugs, missing tests, a11y issues, scope creep. Never edits. |
-| `test-writer` | Read + write under `tests/` | Turns acceptance criteria into Vitest/Playwright tests before implementation |
-| `perf-a11y-auditor` | Read + run Lighthouse/axe/bundle scripts | Runs budgets on the preview or local build and reports regressions with likely causes |
-| `content-checker` | Read-only | Compares every number, title, date and link in `content/` against `docs/content/claims.md`; flags anything unsourced |
-| `asset-pipeline` *(Phase 4)* | Read + run `assets:*` scripts | Optimizes new 3D assets, checks budgets, updates `LICENSES-ASSETS.md` |
+| Agent                        | Tools                                    | Job                                                                                                                               |
+| ---------------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `reviewer`                   | Read-only + run tests                    | Reviews the branch diff against the spec, ADRs and `CLAUDE.md`; flags bugs, missing tests, a11y issues, scope creep. Never edits. |
+| `test-writer`                | Read + write under `tests/`              | Turns acceptance criteria into Vitest/Playwright tests before implementation                                                      |
+| `perf-a11y-auditor`          | Read + run Lighthouse/axe/bundle scripts | Runs budgets on the preview or local build and reports regressions with likely causes                                             |
+| `content-checker`            | Read-only                                | Compares every number, title, date and link in `content/` against `docs/content/claims.md`; flags anything unsourced              |
+| `asset-pipeline` _(Phase 4)_ | Read + run `assets:*` scripts            | Optimizes new 3D assets, checks budgets, updates `LICENSES-ASSETS.md`                                                             |
 
 Using a separate reviewer means the code isn't graded by the same context that wrote it.
 
 ### 5.4 Skills / slash commands (`.claude/skills/`)
 
-| Command | What it does |
-|---|---|
-| `/spec <issue>` | Read the issue + plan section, plan (plan mode is read-only, so the file is written after leaving it), write `docs/specs/<feature>.md` with `Status: Draft`, stop for approval |
-| `/implement <spec>` | Refuse unless `Status: Approved` → create branch → call `test-writer` → implement in small commits until tests pass → run `pnpm verify` |
-| `/self-review` | Run `reviewer` (and `content-checker` if content changed); apply non-controversial fixes; list the rest |
-| `/pr` | Fill the PR template, attach mobile screenshots from Playwright, open the PR with `gh` |
-| `/ci-fix` | Read failing CI logs, reproduce locally, fix, push to the same branch |
-| `/add-asset <file>` *(Phase 4)* | Run the 3D asset pipeline (§7) on a new model and report budget impact |
-| `/retro` | Summarize what went wrong/right on the merged PR and propose `CLAUDE.md` edits for Daniel to approve |
+| Command                         | What it does                                                                                                                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/spec <issue>`                 | Read the issue + plan section, plan (plan mode is read-only, so the file is written after leaving it), write `docs/specs/<feature>.md` with `Status: Draft`, stop for approval |
+| `/implement <spec>`             | Refuse unless `Status: Approved` → create branch → call `test-writer` → implement in small commits until tests pass → run `pnpm verify`                                        |
+| `/self-review`                  | Run `reviewer` (and `content-checker` if content changed); apply non-controversial fixes; list the rest                                                                        |
+| `/pr`                           | Fill the PR template, attach mobile screenshots from Playwright, open the PR with `gh`                                                                                         |
+| `/ci-fix`                       | Read failing CI logs, reproduce locally, fix, push to the same branch                                                                                                          |
+| `/add-asset <file>` _(Phase 4)_ | Run the 3D asset pipeline (§7) on a new model and report budget impact                                                                                                         |
+| `/retro`                        | Summarize what went wrong/right on the merged PR and propose `CLAUDE.md` edits for Daniel to approve                                                                           |
 
 ### 5.5 MCP servers (optional, add when needed)
 
@@ -235,18 +245,18 @@ Run at most two agent streams at once, each in its own **git worktree** (for exa
 
 ## 6. Testing strategy
 
-| Layer | What it proves | Tool | Runs |
-|---|---|---|---|
-| Static | Types, lint, formatting | `tsc`, ESLint, Prettier | Hooks + CI |
-| Unit | Data helpers, metadata, project model, quality gate logic | Vitest | Hooks (changed) + CI (all) |
-| Component | Cards, nav, panels, Architecture Explorer behaviour | Vitest + Testing Library | CI |
-| End-to-end | Real user journeys (below) on mobile + desktop | Playwright | CI on every PR |
-| Visual regression | Layout didn't shift unexpectedly | Playwright screenshots, 3 viewports | CI on every PR (from Phase 1) |
-| Accessibility | WCAG 2.2 AA basics, keyboard paths | axe + Playwright keyboard tests | CI on every PR |
-| Performance | Core Web Vitals proxies, JS budget | Lighthouse CI (mobile), bundle check | CI on every PR |
-| 3D | Scene loads, hotspots work, fallback works, assets within budget | Playwright (WebGL on and off), asset budget script | CI on PRs touching `/explore` or `public/models` |
-| Content | No dead links, no unsourced claims | Link checker, `content-checker` agent | CI + before release |
-| Real device | Touch feel, frame rate, tilt permission, readability | Daniel on a mid-range Android phone + iPhone | Before merging UI work |
+| Layer             | What it proves                                                   | Tool                                               | Runs                                             |
+| ----------------- | ---------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------ |
+| Static            | Types, lint, formatting                                          | `tsc`, ESLint, Prettier                            | Hooks + CI                                       |
+| Unit              | Data helpers, metadata, project model, quality gate logic        | Vitest                                             | Hooks (changed) + CI (all)                       |
+| Component         | Cards, nav, panels, Architecture Explorer behaviour              | Vitest + Testing Library                           | CI                                               |
+| End-to-end        | Real user journeys (below) on mobile + desktop                   | Playwright                                         | CI on every PR                                   |
+| Visual regression | Layout didn't shift unexpectedly                                 | Playwright screenshots, 3 viewports                | CI on every PR (from Phase 1)                    |
+| Accessibility     | WCAG 2.2 AA basics, keyboard paths                               | axe + Playwright keyboard tests                    | CI on every PR                                   |
+| Performance       | Core Web Vitals proxies, JS budget                               | Lighthouse CI (mobile), bundle check               | CI on every PR                                   |
+| 3D                | Scene loads, hotspots work, fallback works, assets within budget | Playwright (WebGL on and off), asset budget script | CI on PRs touching `/explore` or `public/models` |
+| Content           | No dead links, no unsourced claims                               | Link checker, `content-checker` agent              | CI + before release                              |
+| Real device       | Touch feel, frame rate, tilt permission, readability             | Daniel on a mid-range Android phone + iPhone       | Before merging UI work                           |
 
 ### Core e2e journeys (must always pass)
 
@@ -259,14 +269,14 @@ Run at most two agent streams at once, each in its own **git worktree** (for exa
 
 ### Budgets that fail CI
 
-| Budget | Limit |
-|---|---|
-| Lighthouse mobile performance (home, case study) | ≥ 90 |
-| Lighthouse accessibility | ≥ 95 |
-| Home page JS (script transfer size, Lighthouse CI) | ≤ 150 KB |
-| `/explore` scene download | ≤ 5 MB |
-| Scene triangles / draw calls | ≤ ~150K / ≤ 100 |
-| axe serious/critical violations | 0 |
+| Budget                                             | Limit           |
+| -------------------------------------------------- | --------------- |
+| Lighthouse mobile performance (home, case study)   | ≥ 90            |
+| Lighthouse accessibility                           | ≥ 95            |
+| Home page JS (script transfer size, Lighthouse CI) | ≤ 150 KB        |
+| `/explore` scene download                          | ≤ 5 MB          |
+| Scene triangles / draw calls                       | ≤ ~150K / ≤ 100 |
+| axe serious/critical violations                    | 0               |
 
 Start budgets slightly loose if needed and tighten after the first stable release; never loosen them silently in a feature PR.
 
@@ -278,13 +288,13 @@ Start budgets slightly loose if needed and tighten after the first stable releas
 
 ### Sources to evaluate
 
-| Source | License to check | Good for |
-|---|---|---|
-| Kenney asset packs | CC0 | Furniture, props, consistent style |
-| Quaternius | CC0 | Stylized low-poly props and rooms |
-| Poly Pizza | Per model (CC0 or CC-BY) | Individual objects (headset, plant, robot) |
-| Sketchfab | Per model (check commercial/attribution terms) | Specific hero objects if needed |
-| Poly Haven | CC0 | HDRI environment lighting, textures |
+| Source             | License to check                               | Good for                                   |
+| ------------------ | ---------------------------------------------- | ------------------------------------------ |
+| Kenney asset packs | CC0                                            | Furniture, props, consistent style         |
+| Quaternius         | CC0                                            | Stylized low-poly props and rooms          |
+| Poly Pizza         | Per model (CC0 or CC-BY)                       | Individual objects (headset, plant, robot) |
+| Sketchfab          | Per model (check commercial/attribution terms) | Specific hero objects if needed            |
+| Poly Haven         | CC0                                            | HDRI environment lighting, textures        |
 
 Prefer **one or two packs with a matching style** over many mismatched models. Check each license before download and record it.
 
@@ -321,15 +331,18 @@ download → assets-raw/<pack>/            (not shipped)
 
 ```markdown
 ## What / why
+
 Spec: docs/specs/<feature>.md · Closes #<issue>
 
 ## Acceptance criteria
+
 - [ ] AC1 — test: <file>
 - [ ] AC2 — test: <file>
 
 ## Screenshots (mobile 390px, desktop 1440px)
 
 ## Checks
+
 - [ ] pnpm verify green locally
 - [ ] /self-review (reviewer subagent): no blocking findings
 - [ ] No new dependency (or justified below)
@@ -362,29 +375,29 @@ install (pnpm, cached)
 
 ## 9. Human checkpoints (non-negotiable)
 
-| Checkpoint | Why it stays human |
-|---|---|
-| Approving each spec | Decides what gets built and how much |
-| Every public claim and case-study text | Accuracy, NDA and employer permissions |
-| Reading the PR diff | Agents can pass tests while doing the wrong thing |
-| Real-phone check for UI | Feel, readability and touch can't be fully automated |
-| Updating visual baselines | Prevents "fixing" a regression by accepting it |
-| Merge and production deploy | Accountability for what's public |
-| Choosing 3D assets and licenses | Style judgement and legal responsibility |
+| Checkpoint                             | Why it stays human                                   |
+| -------------------------------------- | ---------------------------------------------------- |
+| Approving each spec                    | Decides what gets built and how much                 |
+| Every public claim and case-study text | Accuracy, NDA and employer permissions               |
+| Reading the PR diff                    | Agents can pass tests while doing the wrong thing    |
+| Real-phone check for UI                | Feel, readability and touch can't be fully automated |
+| Updating visual baselines              | Prevents "fixing" a regression by accepting it       |
+| Merge and production deploy            | Accountability for what's public                     |
+| Choosing 3D assets and licenses        | Style judgement and legal responsibility             |
 
 ---
 
 ## 10. Phase-by-phase mapping
 
-| Plan phase | Workflow focus | Notable agent work |
-|---|---|---|
+| Plan phase                      | Workflow focus                                                                                                                       | Notable agent work                                                                            |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
 | **Sprint 0 — Foundation** (new) | Repo scaffold, CI, hooks, `CLAUDE.md`, subagents, skills, Vercel, branch protection, one trivial page shipped through the full cycle | Claude scaffolds everything; Daniel reviews config carefully — it governs every later session |
-| Phase 0 — Content audit | Mostly human; Claude drafts copy and `claims.md` from the resume | `content-checker` set up early |
-| Phase 1 — Design system + home | Tokens, layout, components, home page | Visual baselines established here |
-| Phase 2 — Case studies | MDX pipeline, case-study components, four pages | `content-checker` on every content PR |
-| Phase 3 — Lab MVP | Architecture Explorer as standalone component | Component tests for every node interaction |
-| Phase 4 — 3D Workspace | Asset pipeline, `/explore`, fallback, tilt mode | `asset-pipeline` + 3D e2e + budgets |
-| Phase 5 — Launch | Domain, SEO, analytics, release tag | Production smoke tests, link check |
+| Phase 0 — Content audit         | Mostly human; Claude drafts copy and `claims.md` from the resume                                                                     | `content-checker` set up early                                                                |
+| Phase 1 — Design system + home  | Tokens, layout, components, home page                                                                                                | Visual baselines established here                                                             |
+| Phase 2 — Case studies          | MDX pipeline, case-study components, four pages                                                                                      | `content-checker` on every content PR                                                         |
+| Phase 3 — Lab MVP               | Architecture Explorer as standalone component                                                                                        | Component tests for every node interaction                                                    |
+| Phase 4 — 3D Workspace          | Asset pipeline, `/explore`, fallback, tilt mode                                                                                      | `asset-pipeline` + 3D e2e + budgets                                                           |
+| Phase 5 — Launch                | Domain, SEO, analytics, release tag                                                                                                  | Production smoke tests, link check                                                            |
 
 **Sprint 0 is the most important step:** prove the whole loop (spec → tests → PR → CI → preview → merge → deploy) on a tiny "Hello" page before building anything real.
 
@@ -405,17 +418,17 @@ Every repeated correction should end up in `CLAUDE.md`, a hook, a test or a suba
 
 ## 12. Risks and mitigations
 
-| Risk | Mitigation |
-|---|---|
-| Agent drifts from the plan or invents features | Spec-first rule, reviewer subagent checks scope, small PRs |
-| Tests weakened to get green | `CLAUDE.md` rule, reviewer flags deleted/skipped tests, baselines protected by hook |
-| Invented or overstated career claims | `claims.md` source of truth + `content-checker` + human sign-off |
-| Employer-confidential material leaks | Never-commit rules, protected paths, human review of every media asset |
-| Dependency bloat slows mobile | New deps need approval; bundle budget in CI |
-| 3D scene too heavy on phones | Asset budget script, Lighthouse on `/explore`, automatic low-end fallback |
-| Asset license problems | `LICENSES-ASSETS.md`, CC0-first sources, human approval |
-| Flaky e2e tests erode trust | Retry once in CI, quarantine label, fix within the next PR |
-| Context loss between sessions | Everything important lives in repo files, not chat history |
+| Risk                                           | Mitigation                                                                          |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Agent drifts from the plan or invents features | Spec-first rule, reviewer subagent checks scope, small PRs                          |
+| Tests weakened to get green                    | `CLAUDE.md` rule, reviewer flags deleted/skipped tests, baselines protected by hook |
+| Invented or overstated career claims           | `claims.md` source of truth + `content-checker` + human sign-off                    |
+| Employer-confidential material leaks           | Never-commit rules, protected paths, human review of every media asset              |
+| Dependency bloat slows mobile                  | New deps need approval; bundle budget in CI                                         |
+| 3D scene too heavy on phones                   | Asset budget script, Lighthouse on `/explore`, automatic low-end fallback           |
+| Asset license problems                         | `LICENSES-ASSETS.md`, CC0-first sources, human approval                             |
+| Flaky e2e tests erode trust                    | Retry once in CI, quarantine label, fix within the next PR                          |
+| Context loss between sessions                  | Everything important lives in repo files, not chat history                          |
 
 ---
 

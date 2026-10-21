@@ -15,32 +15,32 @@ The portfolio is a mostly static, content-heavy, mobile-first site (home, four c
 
 ## Decision
 
-| Concern | Choice |
-|---|---|
-| Framework | **Next.js, App Router**, React Server Components by default, static rendering where possible |
-| Language | **TypeScript**, `strict` + `noUncheckedIndexedAccess` |
-| Runtime | **Node.js Active LTS**, the same locally and in CI; exact major pinned in S2 (`.nvmrc`, `engines`) |
-| Package manager | **pnpm**, version pinned via `packageManager` + corepack |
-| Styling | **Tailwind CSS**; Radix primitives and Motion added when first needed (Phase 1) |
-| Long-form content | **MDX** (Phase 2) |
-| 3D | **React Three Fiber + drei + Three.js**, dynamically imported with `ssr: false`, only on `/explore` and Lab routes (Phase 3–4) |
-| Lint / format | ESLint (flat config, `eslint` CLI) + Prettier |
-| Tests | Vitest + Testing Library; Playwright (Android, iPhone, desktop projects) with `@axe-core/playwright`; Lighthouse CI against a local production build |
-| CI | GitHub Actions |
-| Hosting | **Vercel**: a preview per PR, production from `main` |
+| Concern           | Choice                                                                                                                                               |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework         | **Next.js, App Router**, React Server Components by default, static rendering where possible                                                         |
+| Language          | **TypeScript**, `strict` + `noUncheckedIndexedAccess`                                                                                                |
+| Runtime           | **Node.js Active LTS**, the same locally and in CI; exact major pinned in S2 (`.nvmrc`, `engines`)                                                   |
+| Package manager   | **pnpm**, version pinned via `packageManager` + corepack                                                                                             |
+| Styling           | **Tailwind CSS**; Radix primitives and Motion added when first needed (Phase 1)                                                                      |
+| Long-form content | **MDX** (Phase 2)                                                                                                                                    |
+| 3D                | **React Three Fiber + drei + Three.js**, dynamically imported with `ssr: false`, only on `/explore` and Lab routes (Phase 3–4)                       |
+| Lint / format     | ESLint (flat config, `eslint` CLI) + Prettier                                                                                                        |
+| Tests             | Vitest + Testing Library; Playwright (Android, iPhone, desktop projects) with `@axe-core/playwright`; Lighthouse CI against a local production build |
+| CI                | GitHub Actions                                                                                                                                       |
+| Hosting           | **Vercel**: a preview per PR, production from `main`                                                                                                 |
 
 Versions: the latest stable release of each tool at the start of S2, recorded in `package.json` and the lockfile.
 
 ### Versions pinned in S2 (2026-10-21)
 
-| Tool | Version | Note |
-|---|---|---|
-| Node.js | 24 (`.nvmrc`, `engines` `24.x`, CI) | No line was in Active LTS that day: 24 went to Maintenance LTS on 2026-10-20 (supported until 2028-04-30), and 26 becomes Active LTS on 2026-10-28. Daniel chose 24, with the move to 26 in its own `chore/` PR. |
-| pnpm | 12.14.0 (`packageManager`) | Through corepack. `engineStrict` on, so a wrong Node version fails the install. |
-| Next.js | 16.4.2 | Turbopack. `cacheComponents` + `partialPrefetching` as in the create-next-app template; `agentRules: false` so `next dev` doesn't write `AGENTS.md` (agent context lives in `CLAUDE.md`). |
-| React | 19.3.1 | |
-| TypeScript | 5.9.3 | 7.x is out, but create-next-app 16.4.2 still targets `^5`. Revisit in its own PR. |
-| Tailwind CSS | 4.3.3 | CSS-first config, loaded through `@tailwindcss/turbopack` (the template default) instead of PostCSS. |
+| Tool         | Version                             | Note                                                                                                                                                                                                             |
+| ------------ | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node.js      | 24 (`.nvmrc`, `engines` `24.x`, CI) | No line was in Active LTS that day: 24 went to Maintenance LTS on 2026-10-20 (supported until 2028-04-30), and 26 becomes Active LTS on 2026-10-28. Daniel chose 24, with the move to 26 in its own `chore/` PR. |
+| pnpm         | 12.14.0 (`packageManager`)          | Through corepack. `engineStrict` on, so a wrong Node version fails the install.                                                                                                                                  |
+| Next.js      | 16.4.2                              | Turbopack. `cacheComponents` + `partialPrefetching` as in the create-next-app template; `agentRules: false` so `next dev` doesn't write `AGENTS.md` (agent context lives in `CLAUDE.md`).                        |
+| React        | 19.3.1                              |                                                                                                                                                                                                                  |
+| TypeScript   | 5.9.3                               | 7.x is out, but create-next-app 16.4.2 still targets `^5`. Revisit in its own PR.                                                                                                                                |
+| Tailwind CSS | 4.3.3                               | CSS-first config, loaded through `@tailwindcss/turbopack` (the template default) instead of PostCSS.                                                                                                             |
 
 ## Alternatives considered
 
