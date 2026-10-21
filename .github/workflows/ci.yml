@@ -84,3 +84,26 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 14
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      # Uses the runner's preinstalled Chrome.
+      - run: pnpm lhci
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          # The directory is hidden; upload-artifact skips those by default.
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
