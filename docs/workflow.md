@@ -200,6 +200,8 @@ Write a short ADR (context → decision → consequences) whenever a choice woul
 
 ### 5.2 Hooks (deterministic guardrails)
 
+Sprint 0 builds only **format on write** and **protected paths**. Done check and session context are deferred until a real need appears (Sprint 0 spec, Q8).
+
 | Hook            | Trigger                                                      | Action                                                                                              |
 | --------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
 | Format on write | `PostToolUse` on Edit/Write of `*.ts(x)`, `*.md(x)`, `*.css` | Run Prettier + ESLint `--fix` on that file; report remaining errors back to Claude                  |
@@ -208,6 +210,8 @@ Write a short ADR (context → decision → consequences) whenever a choice woul
 | Session context | `SessionStart`                                               | Print current branch, open spec, and `git status` so each session starts oriented                   |
 
 ### 5.3 Subagents (`.claude/agents/`)
+
+Sprint 0 builds only **`reviewer`**. `content-checker` comes with Phase 0 claims; `test-writer` and `perf-a11y-auditor` are deferred, since CI already enforces tests and budgets (Sprint 0 spec, Q8).
 
 | Agent                        | Tools                                    | Job                                                                                                                               |
 | ---------------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
@@ -220,6 +224,8 @@ Write a short ADR (context → decision → consequences) whenever a choice woul
 Using a separate reviewer means the code isn't graded by the same context that wrote it.
 
 ### 5.4 Skills / slash commands (`.claude/skills/`)
+
+Sprint 0 builds only **`/spec`**, **`/self-review`** and **`/pr`**. `/implement`, `/ci-fix` and `/retro` are deferred; until then, the stages they would run happen by hand in the session (Sprint 0 spec, Q8).
 
 | Command                         | What it does                                                                                                                                                                   |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
