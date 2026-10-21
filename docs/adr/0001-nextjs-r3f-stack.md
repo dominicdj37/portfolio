@@ -1,6 +1,6 @@
 # ADR 0001 — Next.js + React Three Fiber stack
 
-Status: **Proposed** — drafted by Claude, 2026-10-21; awaiting Daniel's acceptance
+Status: **Accepted** — Daniel, 2026-10-21 (drafted by Claude)
 Related: docs/plan.md §9, docs/workflow.md §3, docs/specs/sprint-0-foundation.md
 
 ## Context
