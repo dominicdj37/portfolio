@@ -31,6 +31,17 @@ The portfolio is a mostly static, content-heavy, mobile-first site (home, four c
 
 Versions: the latest stable release of each tool at the start of S2, recorded in `package.json` and the lockfile.
 
+### Versions pinned in S2 (2026-10-21)
+
+| Tool | Version | Note |
+|---|---|---|
+| Node.js | 24 (`.nvmrc`, `engines` `24.x`, CI) | No line was in Active LTS that day: 24 went to Maintenance LTS on 2026-10-20 (supported until 2028-04-30), and 26 becomes Active LTS on 2026-10-28. Daniel chose 24, with the move to 26 in its own `chore/` PR. |
+| pnpm | 12.14.0 (`packageManager`) | Through corepack. `engineStrict` on, so a wrong Node version fails the install. |
+| Next.js | 16.4.2 | Turbopack. `cacheComponents` + `partialPrefetching` as in the create-next-app template; `agentRules: false` so `next dev` doesn't write `AGENTS.md` (agent context lives in `CLAUDE.md`). |
+| React | 19.3.1 | |
+| TypeScript | 5.9.3 | 7.x is out, but create-next-app 16.4.2 still targets `^5`. Revisit in its own PR. |
+| Tailwind CSS | 4.3.3 | CSS-first config, loaded through `@tailwindcss/turbopack` (the template default) instead of PostCSS. |
+
 ## Alternatives considered
 
 - **Astro + React islands.** A strong fit for a content site and very low JS by default; R3F can run in an island. Not chosen because Next.js is what plan §9 assumes, and it has the larger ecosystem for MDX and React components. The JS budget in CI holds Next.js to a similar standard.
