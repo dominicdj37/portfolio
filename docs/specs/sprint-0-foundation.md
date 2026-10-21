@@ -1,7 +1,7 @@
 # Sprint 0 — Foundation
 
 Plan reference: docs/workflow.md §10, §13 (Sprint 0 is not in docs/plan.md §13) Issue: #— (none yet; create one per slice)
-Status: **Approved** — Daniel, 2026-10-21 (approved in session; line updated by Claude on instruction)
+Status: **Approved** — Daniel, 2026-10-21 (approved in session; line updated by Claude on instruction). Amended 2026-10-21: S8, S9 and S11 trimmed (Q8), approved by Daniel's merge of the amending PR.
 
 ## Goal
 
@@ -14,7 +14,7 @@ No visitor-facing feature. After this sprint, every later feature can go spec �
 - Next.js (App Router) + TypeScript strict scaffold, pnpm, Tailwind CSS.
 - ESLint + Prettier; Vitest + Testing Library; Playwright with `android`, `iphone` and `desktop` projects; `@axe-core/playwright`; Lighthouse CI.
 - GitHub Actions CI. Each tooling slice adds its own job, so the gates grow one at a time.
-- `CLAUDE.md` (from workflow §4.2), `.claude/settings.json` permissions (§5.1) and hooks (§5.2), the 5 subagents (§5.3) and 7 skills (§5.4).
+- `CLAUDE.md` (from workflow §4.2), `.claude/settings.json` permissions (§5.1), two of the §5.2 hooks (format on write, protected paths), the `reviewer` subagent (§5.3) and the `/spec`, `/self-review` and `/pr` skills (§5.4). The rest of §5.2–5.4 is added when a real need appears (Q8).
 - PR template (§8), spec template (§4.3), ADR 0001 (stack).
 - Post-deploy production smoke test (§8 Release step 2), limited to `/`.
 - Placeholder home page, shipped through the full cycle (§2, stages 1–12).
@@ -100,17 +100,18 @@ Hooks are Node scripts (`.claude/hooks/*.mjs`), not shell scripts, so they behav
 - [ ] S8-AC1 **Format on write** (PostToolUse, Edit|Write): `.ts/.tsx/.js/.mjs` files get Prettier + `eslint --fix`; `.md/.mdx/.css/.json` files get Prettier only. Remaining ESLint errors go back to Claude (exit 2 + stderr). Other files are ignored.
 - [ ] S8-AC2 **Protected paths** (PreToolUse, Edit|Write|NotebookEdit): writes to `.env*`, `assets-raw/**`, `**/*-snapshots/**` and `public/resume/**` are blocked with a reason.
 - [ ] S8-AC3 **Protected paths, Bash** (PreToolUse, Bash): best-effort blocking of commands that clearly target those paths (redirects, `cp`/`mv`/`rm`/`tee`), of `--update-snapshots`/`-u` on Playwright, and of `rm -rf` on anything except `.next`, `test-results`, `playwright-report`, `.lighthouseci` and `coverage`. Documented as best-effort; branch protection and review are the backstop.
-- [ ] S8-AC4 **Done check** (Stop): exits 0 without running anything if there is no `package.json`, if `stop_hook_active` is true (prevents loops), or if no `.ts/.tsx` file changed against `HEAD`. Otherwise it runs `pnpm typecheck && pnpm test --changed` and, on failure, returns `{"decision":"block"}` with the first errors.
-- [ ] S8-AC5 **Session context** (SessionStart): prints the branch, the spec matched from the branch name (`<type>/<slug>` → `docs/specs/<slug>.md`, with its Status, or "no spec"), and `git status --short`.
-- [ ] S8-AC6 Unit tests cover each hook's decision function, including path normalisation for Windows backslashes and mixed case.
+- [ ] S8-AC4 Unit tests cover each hook's decision function, including path normalisation for Windows backslashes and mixed case.
+- [ ] S8-AC5 Each hook is registered in `.claude/settings.json` and seen to work once on Daniel's Windows machine (a blocked write to `.env.test`, a misformatted file fixed on save), recorded in the PR.
 
-### S9 · `chore/claude-agents-skills` — subagents + skills
+Deferred (Q8): the **done check** (Stop hook running `pnpm typecheck && pnpm test --changed`, which CI already covers) and **session context** (SessionStart summary of branch, spec Status and `git status`). Either is added in its own `chore/` PR if a real need appears. The Stop hook then needs the `stop_hook_active` guard and the no-code-changed skip from W5.
 
-- [ ] S9-AC1 Four agents in `.claude/agents/` (`reviewer`, `test-writer`, `perf-a11y-auditor`, `content-checker`), each with `name`, `description`, `tools` and a prompt that cites the docs it checks against.
-- [ ] S9-AC2 `reviewer` and `content-checker` have no Edit/Write/NotebookEdit. `content-checker` also has no Bash. The contract test from S7-AC3 also asserts these frontmatter tool lists.
-- [ ] S9-AC3 The `test-writer` path limit (`tests/**` only) is enforced by the S8 hook if hook input identifies the subagent; otherwise it relies on the prompt and on reviewer checks, and the PR says which (see W9).
-- [ ] S9-AC4 Six skills in `.claude/skills/<name>/SKILL.md` (§5.4 minus `/add-asset`). Names don't collide with built-in commands (see W6). Skills with side effects (`implement`, `pr`, `ci-fix`) set `disable-model-invocation: true`.
-- [ ] S9-AC5 `/spec` writes `docs/specs/<slug>.md` with `Status: Draft` and stops. `/implement` refuses unless the spec says `Status: Approved`.
+### S9 · `chore/claude-agents-skills` — reviewer + core skills
+
+- [ ] S9-AC1 One agent, `.claude/agents/reviewer.md`, with `name`, `description`, `tools` and a prompt that reviews the branch diff against the spec, `CLAUDE.md` and the accepted ADRs, citing them. It has no Edit/Write/NotebookEdit, and the S7 contract test asserts that tool list.
+- [ ] S9-AC2 Three skills in `.claude/skills/<name>/SKILL.md`: `/spec`, `/self-review`, `/pr`. Names don't collide with built-in commands (W6). `/pr` has side effects, so it sets `disable-model-invocation: true`.
+- [ ] S9-AC3 `/spec` writes `docs/specs/<slug>.md` from the template with `Status: Draft` and stops. `/self-review` runs `reviewer` on the branch diff, applies non-controversial fixes and lists the rest. `/pr` fills the PR template, including AC-to-test mapping and proof-of-red links, and opens the PR with `gh`.
+
+Deferred (Q8): the `test-writer`, `perf-a11y-auditor` and `content-checker` agents, and the `/implement`, `/ci-fix` and `/retro` skills. `content-checker` should come with Phase 0, when `claims.md` gets real claims. Until `/implement` exists, the "work only from an Approved spec" rule is enforced through `CLAUDE.md`.
 
 ### S10 · `chore/deploy-smoke` — production smoke test
 
@@ -123,10 +124,10 @@ Hooks are Node scripts (`.claude/hooks/*.mjs`), not shell scripts, so they behav
 
 Runs exactly as §2 describes. It needs its own spec (`docs/specs/placeholder-home.md`) written with `/spec`.
 
-- [ ] S11-AC1 Every stage from 1 to 12 happens: an issue, `/spec`, Daniel's approval, a branch, failing tests first, implementation, `/self-review` clean, `/pr`, all CI checks green, a Vercel preview checked on a real Android phone and an iPhone, a squash merge by Daniel, production deploy, smoke test green, `/retro`.
+- [ ] S11-AC1 Every stage from 1 to 12 happens: an issue, `/spec`, Daniel's approval, a branch, failing tests first, implementation, `/self-review` clean, `/pr`, all CI checks green, a Vercel preview checked on a real Android phone and an iPhone, a squash merge by Daniel, production deploy, smoke test green, and a short retro.
 - [ ] S11-AC2 The page meets every Sprint 0 budget on all 3 projects, has no horizontal scroll at 320 px, sets `lang`, `<title>` and meta description, and sends `robots: noindex` until Phase 5 (see Q5).
-- [ ] S11-AC3 The page makes no claims that would need `claims.md` (see Q5).
-- [ ] S11-AC4 `/retro` output results in at least one approved edit to `CLAUDE.md`, a hook or a skill, or an explicit "no changes".
+- [ ] S11-AC3 The page makes no claims that would need `claims.md` (see Q5). This slice creates `docs/content/claims.md` with headings and no claims, because `CLAUDE.md` already refers to it.
+- [ ] S11-AC4 The retro (written by Claude in the PR or chat, since `/retro` is deferred) results in at least one approved edit to `CLAUDE.md`, a hook or a skill, or an explicit "no changes".
 
 **Sprint 0 is done when** S1–S11 are merged, each gate has a recorded proof of red, and `main` is protected.
 
@@ -156,7 +157,7 @@ The only visitor-facing output is the placeholder page in S11: one screen with t
 
 ### Decisions needed before S1 is approved
 
-- **Q1 — How is a spec marked approved? ✅ Decided (2026-10-21): status line.** Each spec has `Status: Draft | Approved`, and only Daniel changes it to Approved. `/implement` and the SessionStart hook read it.
+- **Q1 — How is a spec marked approved? ✅ Decided (2026-10-21): status line.** Each spec has `Status: Draft | Approved`, and only Daniel changes it to Approved. The `CLAUDE.md` rules enforce it; `/implement` and the SessionStart hook would read it if added later (Q8).
 - **Q2 — Lighthouse against local build or Vercel preview? ✅ Decided (2026-10-21): local build in CI** (`next start` on the runner) is the required gate. A preview run can come later as a separate, non-required check; it needs a Vercel protection-bypass secret (W10).
 - **Q3 — How are visual baselines created when the hook blocks writes to them? ✅ Decided (2026-10-21): a CI job only Daniel triggers.** A `workflow_dispatch` "update-snapshots" job regenerates them on Linux and commits them to the PR branch. The CLAUDE.md rule becomes "never update baselines; Daniel runs update-snapshots", which matches the hook. The job is built in Phase 1; the hook ships now.
 - **Q4 — Node version. ✅ Decided (2026-10-21): current Active LTS,** pinned in `.nvmrc`, `engines` and CI. The exact version is confirmed at the start of S2. Daniel replaces the local Node 25 install before S2.
@@ -164,6 +165,7 @@ The only visitor-facing output is the placeholder page in S11: one screen with t
 - **Q6 — `asset-pipeline` agent and `/add-asset` now? ✅ Decided (2026-10-21): deferred to Phase 4,** where a slice adds them together with the `assets:*` scripts.
 - **Q7 — Public or private repo? ✅ Decided (2026-10-21): public, with private notes split out.** Employer-permission notes, NDA cautions, unverified claims and open questions (plan §1 "Decision needed", §6 "Needs verification" blocks, §12 open questions) move to gitignored `docs/private/`, and `docs/plan.md` keeps a pointer. This goes into S1. The first commit (`f8deb46`, already on `origin/main`) contains the unsplit plan, so the history needs cleaning before the repo is public.
 - **Q7a — History cleanup. ✅ Decided (2026-10-21): fresh history.** Daniel makes the repo private until S1 is ready. Claude prepares one clean root commit locally (split plan, no private content). Daniel does the force-push to `main`; Claude never force-pushes, per §5.1 deny rules. After that, Daniel makes the repo public. This happens before branch protection (S6-AC6), which would block the force-push.
+- **Q8 — Is the full §5.2–5.4 agent setup worth building for a one-person portfolio? ✅ Decided (2026-10-21, after S7): trimmed.** Keep what protects the repo or carries the core loop: format-on-write and protected-path hooks, the `reviewer` agent, and `/spec`, `/self-review`, `/pr`. CI and branch protection already enforce what the done-check hook, `test-writer` and `perf-a11y-auditor` would add. Defer the rest and add each item in its own `chore/` PR when a real need appears (for example, `content-checker` in Phase 0). `docs/workflow.md` §5.2–5.4 mark which parts exist.
 
 ### Things in the docs that are wrong or won't work as written
 
