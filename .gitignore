@@ -1,0 +1,10 @@
+# Private planning notes (employer permissions, unverified claims) — never commit
+docs/private/
+
+# Secrets
+.env*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
