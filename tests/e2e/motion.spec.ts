@@ -12,6 +12,13 @@ test.describe("motion", () => {
       parseFloat(getComputedStyle(el).animationDuration),
     );
     expect(duration).toBeLessThanOrEqual(0.01);
+    // No stagger delay either, or later words sit blurred while they wait.
+    const delays = await page
+      .locator("#hero h1 [data-word]")
+      .evaluateAll((els) =>
+        els.map((el) => parseFloat(getComputedStyle(el).animationDelay)),
+      );
+    expect(Math.max(...delays)).toBeLessThanOrEqual(0.01);
     expect(
       await page.evaluate(
         () => getComputedStyle(document.documentElement).scrollBehavior,
