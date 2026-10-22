@@ -213,13 +213,13 @@ Sprint 0 builds only **format on write** and **protected paths** (`.claude/hooks
 
 Sprint 0 builds only **`reviewer`**. `content-checker` comes with Phase 0 claims; `test-writer` and `perf-a11y-auditor` are deferred, since CI already enforces tests and budgets (Sprint 0 spec, Q8).
 
-| Agent                        | Tools                                    | Job                                                                                                                               |
-| ---------------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `reviewer`                   | Read-only + run tests                    | Reviews the branch diff against the spec, ADRs and `CLAUDE.md`; flags bugs, missing tests, a11y issues, scope creep. Never edits. |
-| `test-writer`                | Read + write under `tests/`              | Turns acceptance criteria into Vitest/Playwright tests before implementation                                                      |
-| `perf-a11y-auditor`          | Read + run Lighthouse/axe/bundle scripts | Runs budgets on the preview or local build and reports regressions with likely causes                                             |
-| `content-checker`            | Read-only                                | Compares every number, title, date and link in `content/` against `docs/content/claims.md`; flags anything unsourced              |
-| `asset-pipeline` _(Phase 4)_ | Read + run `assets:*` scripts            | Optimizes new 3D assets, checks budgets, updates `LICENSES-ASSETS.md`                                                             |
+| Agent                        | Tools                                    | Job                                                                                                                                                                                                                 |
+| ---------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `reviewer`                   | Read-only + run tests                    | Reviews the branch diff against the spec, ADRs and `CLAUDE.md`; flags bugs, missing tests, a11y issues, scope creep. Never edits: its tool list has no Edit/Write, and its prompt forbids writes through Bash (W9). |
+| `test-writer`                | Read + write under `tests/`              | Turns acceptance criteria into Vitest/Playwright tests before implementation                                                                                                                                        |
+| `perf-a11y-auditor`          | Read + run Lighthouse/axe/bundle scripts | Runs budgets on the preview or local build and reports regressions with likely causes                                                                                                                               |
+| `content-checker`            | Read-only                                | Compares every number, title, date and link in `content/` against `docs/content/claims.md`; flags anything unsourced                                                                                                |
+| `asset-pipeline` _(Phase 4)_ | Read + run `assets:*` scripts            | Optimizes new 3D assets, checks budgets, updates `LICENSES-ASSETS.md`                                                                                                                                               |
 
 Using a separate reviewer means the code isn't graded by the same context that wrote it.
 

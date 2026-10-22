@@ -42,5 +42,5 @@ CI (`.github/workflows/ci.yml`) runs `static`, `typecheck`, `unit`, `build`, `e2
 
 ## Definition of done
 
-Spec criteria covered by tests · `pnpm verify` green · /self-review clean (once S9 lands) ·
+Spec criteria covered by tests · `pnpm verify` green · /self-review clean ·
 PR template complete, with mobile (390 px) and desktop (1440 px) screenshots for UI changes.
