@@ -1,12 +1,24 @@
+import { Capabilities } from "@/components/home/capabilities";
+import { CareerSnapshot } from "@/components/home/career-snapshot";
+import { ContactCta } from "@/components/home/contact-cta";
+import { FeaturedWork } from "@/components/home/featured-work";
+import { Hero } from "@/components/home/hero";
+import { LabTeaser } from "@/components/home/lab-teaser";
+import { ProofBento } from "@/components/home/proof-bento";
+import { TechMarquee } from "@/components/home/tech-marquee";
+import { resumeAvailable } from "@/lib/resume";
+
 export default function Home() {
   return (
-    <main className="mx-auto flex min-h-dvh max-w-prose flex-col justify-center px-4">
-      <h1 className="text-3xl leading-tight font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-        Daniel Dominic
-      </h1>
-      <p className="mt-2 text-base text-neutral-600 dark:text-neutral-400">
-        Portfolio coming soon.
-      </p>
-    </main>
+    <>
+      <Hero resumeAvailable={resumeAvailable} />
+      <ProofBento />
+      <FeaturedWork />
+      <Capabilities />
+      <TechMarquee />
+      <CareerSnapshot />
+      <LabTeaser />
+      <ContactCta resumeAvailable={resumeAvailable} />
+    </>
   );
 }

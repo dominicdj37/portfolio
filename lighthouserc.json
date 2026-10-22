@@ -3,22 +3,35 @@
     "collect": {
       "startServerCommand": "pnpm start --port 3200",
       "startServerReadyPattern": "Ready",
-      "url": ["http://localhost:3200/"],
+      "url": [
+        "http://localhost:3200/",
+        "http://localhost:3200/about",
+        "http://localhost:3200/work/casabot"
+      ],
       "numberOfRuns": 3
     },
     "assert": {
       "assertions": {
         "categories:performance": [
           "error",
-          { "minScore": 0.9, "aggregationMethod": "median" }
+          {
+            "minScore": 0.9,
+            "aggregationMethod": "median"
+          }
         ],
         "categories:accessibility": [
           "error",
-          { "minScore": 0.95, "aggregationMethod": "median" }
+          {
+            "minScore": 0.95,
+            "aggregationMethod": "median"
+          }
         ],
         "resource-summary:script:size": [
           "error",
-          { "maxNumericValue": 153600, "aggregationMethod": "median" }
+          {
+            "maxNumericValue": 307200,
+            "aggregationMethod": "median"
+          }
         ]
       }
     },

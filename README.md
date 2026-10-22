@@ -33,7 +33,7 @@ Sprint 0's story in six beats:
 | Required CI checks      | 6: `static`, `typecheck`, `unit`, `build`, `e2e`, `lighthouse`                           |
 | Automated tests         | 142 unit/component, 24 end-to-end runs (8 tests × 3 device profiles), 1 production smoke |
 | Device profiles in CI   | Android (Pixel 7), iPhone 14, desktop 1440 px                                            |
-| Home page JavaScript    | 137.5 KB of a 150 KB budget, enforced in CI                                              |
+| Home page JavaScript    | Under a 300 KB budget (was 150 KB until site v1), enforced in CI                         |
 | Lighthouse (mobile)     | Performance 0.98–0.99 (gate ≥ 0.90), accessibility 1.0 (gate ≥ 0.95)                     |
 | Accessibility gate      | Zero serious or critical axe violations, in light and dark mode                          |
 | Who can merge or deploy | Only Daniel. Branch protection and agent permissions enforce it.                         |
@@ -138,20 +138,20 @@ Each piece has its own tests. A contract test, for example, fails CI if the revi
 
 ## What Sprint 0 built
 
-| Slice | What                                                             | PR  |
-| ----- | ---------------------------------------------------------------- | --- |
-| S1    | Plan, workflow, spec template, first architecture decision (ADR) | —   |
-| S2    | Next.js 16 + React 19 + TypeScript scaffold, CI skeleton         | #1  |
-| S3    | ESLint + Prettier, `static` CI job                               | #2  |
-| S4    | Vitest unit tests, `unit` CI job                                 | #3  |
-| S5    | Playwright end-to-end tests + axe on 3 device profiles           | #4  |
-| S6    | Lighthouse CI with a 150 KB JavaScript budget                    | #5  |
-| S7    | `CLAUDE.md`, agent permissions, settings contract test           | #6  |
-| —     | Trimmed the agent setup to what Sprint 0 actually needs          | #7  |
-| S8    | Hooks: format-on-write and protect-paths                         | #8  |
-| S9    | Reviewer agent and the `/spec`, `/self-review`, `/pr` skills     | #9  |
-| S10   | Automatic production smoke test and rollback steps               | #10 |
-| S11   | Placeholder home page, taken through the full 12-stage cycle     | #12 |
+| Slice | What                                                                      | PR  |
+| ----- | ------------------------------------------------------------------------- | --- |
+| S1    | Plan, workflow, spec template, first architecture decision (ADR)          | —   |
+| S2    | Next.js 16 + React 19 + TypeScript scaffold, CI skeleton                  | #1  |
+| S3    | ESLint + Prettier, `static` CI job                                        | #2  |
+| S4    | Vitest unit tests, `unit` CI job                                          | #3  |
+| S5    | Playwright end-to-end tests + axe on 3 device profiles                    | #4  |
+| S6    | Lighthouse CI with a JavaScript budget (was 150 KB; 300 KB since site v1) | #5  |
+| S7    | `CLAUDE.md`, agent permissions, settings contract test                    | #6  |
+| —     | Trimmed the agent setup to what Sprint 0 actually needs                   | #7  |
+| S8    | Hooks: format-on-write and protect-paths                                  | #8  |
+| S9    | Reviewer agent and the `/spec`, `/self-review`, `/pr` skills              | #9  |
+| S10   | Automatic production smoke test and rollback steps                        | #10 |
+| S11   | Placeholder home page, taken through the full 12-stage cycle              | #12 |
 
 ---
 

@@ -28,7 +28,7 @@ CI (`.github/workflows/ci.yml`) runs `static`, `typecheck`, `unit`, `build`, `e2
 - Write or update tests before implementation. Never delete, skip or weaken a failing test to get green.
 - Every new gate needs a proof of red: a throwaway commit showing the check fails on a deliberate violation, linked in the PR.
 - Never loosen a budget or threshold silently (lighthouserc.json, lint rules, tsconfig). Propose it in a PR with the reason, and update docs/workflow.md §6 and the ADR.
-- Server components by default; `"use client"` only where interaction needs it. The home page JS budget is 150 KB, and Next.js + React already use ~134 KB of it.
+- Server components by default; `"use client"` only where interaction needs it. The home page JS budget is 300 KB (was 150 KB; raised by docs/specs/site-v1.md Q2, to optimize later). Next.js + React use ~134 KB of it.
 - Next.js 16 differs from older versions. Check the version-matched docs in `node_modules/next/dist/docs/` before using a Next.js API.
 - Public content (numbers, titles, employers, dates, results, links) comes from the Approved spec. Whatever Daniel puts there can ship as written. Never invent anything the spec doesn't give.
 - No new dependency without stating why in the PR description.
