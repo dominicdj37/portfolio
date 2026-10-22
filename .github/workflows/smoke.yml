@@ -1,10 +1,13 @@
 name: Production smoke
 
 # S10: after Vercel reports a successful production deploy, check the live site.
-# Deployment URLs are behind Vercel Deployment Protection, so the event is only
-# the trigger: the test runs against the public production domain below.
+# Vercel reports deploys as a commit status (context "Vercel"), not as GitHub
+# Deployments, so `deployment_status` never fires here. A successful status on
+# a commit that's on main is a production deploy. Deployment URLs are behind
+# Vercel Deployment Protection, so the event is only the trigger: the test runs
+# against the public production domain below.
 on:
-  deployment_status:
+  status:
   workflow_dispatch:
     inputs:
       base_url:
@@ -14,12 +17,6 @@ on:
 permissions:
   contents: read
 
-# Vercel sends events for Preview deploys too. Keying on the environment keeps
-# them from cancelling a Production run that's still going.
-concurrency:
-  group: smoke-${{ github.event.deployment.environment || 'manual' }}
-  cancel-in-progress: true
-
 env:
   # Update when the custom domain lands (Phase 5, plan P6).
   PRODUCTION_URL: https://portfolio-mu-inky-3anc9yn1ky.vercel.app
@@ -28,8 +25,14 @@ jobs:
   smoke:
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      (github.event.deployment_status.state == 'success' &&
-       github.event.deployment.environment == 'Production')
+      (github.event.context == 'Vercel' &&
+       github.event.state == 'success' &&
+       contains(github.event.branches.*.name, 'main'))
+    # On the job, not the workflow: every PR's Vercel status also starts a run,
+    # and only runs that pass the `if` above should join (and cancel) the group.
+    concurrency:
+      group: smoke-production
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

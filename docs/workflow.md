@@ -373,7 +373,7 @@ install (pnpm, cached)
 ### Release
 
 1. Daniel merges to `main` → Vercel production deploy.
-2. Post-deploy smoke test: `.github/workflows/smoke.yml` runs `pnpm smoke` against the production domain whenever Vercel reports a successful Production deploy. Sprint 0 checks `/` only; home, one case study, resume download and `/explore` are added as they ship. Run it by hand from Actions → Production smoke → Run workflow (optionally with another URL), or locally with `BASE_URL=<url> pnpm smoke` (PowerShell: `$env:BASE_URL="<url>"; pnpm smoke`).
+2. Post-deploy smoke test: `.github/workflows/smoke.yml` runs `pnpm smoke` against the production domain whenever Vercel reports a successful deploy of a `main` commit (its `Vercel` commit status; Vercel doesn't create GitHub Deployments, so `deployment_status` never fires). Sprint 0 checks `/` only; home, one case study, resume download and `/explore` are added as they ship. Run it by hand from Actions → Production smoke → Run workflow (optionally with another URL), or locally with `BASE_URL=<url> pnpm smoke` (PowerShell: `$env:BASE_URL="<url>"; pnpm smoke`).
 3. If the smoke test fails, **roll back first, then fix forward**:
    1. **Daniel:** Vercel → project → Deployments → the last good Production deployment → ⋯ → **Instant Rollback**. The production domain serves it within seconds.
    2. Re-run Production smoke by hand and check that it's green.
