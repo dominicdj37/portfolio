@@ -78,7 +78,7 @@ function TableOfContents({ ids }: { ids: SectionId[] }) {
           <li key={id}>
             <a
               href={`#${id}`}
-              className="flex min-h-10 items-center border-l-2 border-line pl-3 text-muted transition-colors duration-150 hover:text-fg aria-[current=true]:border-accent aria-[current=true]:text-fg"
+              className="flex min-h-11 items-center border-l-2 border-line pl-3 text-muted transition-colors duration-150 hover:text-fg aria-[current=true]:border-accent aria-[current=true]:text-fg"
             >
               {TITLES[id]}
             </a>

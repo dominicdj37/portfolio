@@ -35,7 +35,11 @@ jobs:
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm build
       - run: pnpm exec playwright test tests/e2e/visual.spec.ts --update-snapshots
+      # The branch name reaches shell scripts through env, never by
+      # interpolating the input into the script (script injection).
       - name: Commit the baselines
+        env:
+          BRANCH: ${{ inputs.branch }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -44,11 +48,12 @@ jobs:
             echo "Baselines unchanged."
           else
             git commit -m "test: update visual baselines (update-snapshots)"
-            git push origin HEAD:${{ inputs.branch }}
+            git push origin "HEAD:$BRANCH"
           fi
       # Pushes made with GITHUB_TOKEN don't trigger workflows, so start CI on
       # the branch explicitly; its checks attach to the new head commit.
       - name: Re-run CI on the branch
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run ci.yml --ref ${{ inputs.branch }}
+          BRANCH: ${{ inputs.branch }}
+        run: gh workflow run ci.yml --ref "$BRANCH"

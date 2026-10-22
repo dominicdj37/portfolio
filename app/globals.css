@@ -591,6 +591,14 @@ body::after {
     display: none;
   }
 
+  /* The chips themselves wrap; otherwise the one list stays a clipped row. */
+  [data-marquee-track] > ul {
+    flex-wrap: wrap;
+    flex-shrink: 1;
+    justify-content: center;
+    padding-right: 0;
+  }
+
   [data-marquee] {
     mask-image: none;
   }
