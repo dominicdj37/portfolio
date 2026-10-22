@@ -32,11 +32,11 @@ Stop and report if any of these fail:
 ## Write and open
 
 1. Fill in `.github/pull_request_template.md` and keep its headings in order. Add **Proof of red** and **Decisions to review** sections after Acceptance criteria:
-   - **What / why:** `Spec: docs/specs/<file> (<slice ID>) · Closes #<issue>` (or `#— (no issue)`), then two or three plain sentences.
+   - **What / why:** `Spec: docs/specs/<file> (<slice ID>, if any) · Closes #<issue>` (or `#— (no issue)`), then two or three plain sentences.
    - **Acceptance criteria:** one checkbox per AC, as `AC — test: <file> (<test name>)`. Tick a box only when its test exists and passes. Manual ACs stay unticked with **Daniel:** and what he needs to do.
    - **Proof of red**, **Decisions to review**, **Screenshots** and **Checks** as gathered above. Tick a Checks box only if it's true, and write "n/a" with a reason where it doesn't apply.
    - End with the PR attribution lines from the session's instructions.
 2. Write the body to a file in the scratchpad, not inline.
 3. Run `git push -u origin <branch>`. This asks Daniel for permission.
-4. Run `gh pr create --base main --head <branch> --title "<type>: <summary> (<slice ID>)" --body-file <file>`. The title is a conventional commit, because it becomes the squash commit.
+4. Run `gh pr create --base main --head <branch> --title "<type>: <summary>" --body-file <file>`. The title is a conventional commit, because it becomes the squash commit. For a slice of a larger spec, end the title with the slice ID, like `(S9)`.
 5. Watch CI with `gh pr checks <n> --watch` (in the background). Report the PR URL and the check results. If a check fails, read the logs (`gh run view <id> --log-failed`), and report the cause and a proposed fix. Don't push a fix without saying so.

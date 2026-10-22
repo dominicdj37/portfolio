@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
@@ -125,7 +125,7 @@ const frontmatter = (path: string) => {
       .split(/\r?\n/)
       .map((line) => /^([\w-]+):\s*(.*)$/.exec(line))
       .filter((field) => field !== null)
-      .map(([, key, value]) => [key, value!.trim()]),
+      .map(([, key, value]) => [key, (value ?? "").trim()]),
   );
   return { fields, body: text.slice(match?.[0].length ?? 0) };
 };
@@ -160,6 +160,9 @@ describe(".claude/agents/reviewer.md", () => {
 });
 
 describe(".claude/skills", () => {
+  // Every skill folder, so a new one named after a built-in fails too.
+  const SKILLS = readdirSync(join(process.cwd(), ".claude", "skills"));
+
   // Built-in commands a skill must not shadow (W6).
   const BUILT_INS = [
     "review",
@@ -169,15 +172,12 @@ describe(".claude/skills", () => {
     "pr-comments",
   ];
 
-  it.each(["spec", "self-review", "pr"])(
-    "%s has a SKILL.md named after its folder",
-    (name) => {
-      const { fields } = frontmatter(`.claude/skills/${name}/SKILL.md`);
-      expect(fields.name).toBe(name);
-      expect(fields.description).toBeTruthy();
-      expect(BUILT_INS).not.toContain(name);
-    },
-  );
+  it.each(SKILLS)("%s has a SKILL.md named after its folder", (name) => {
+    const { fields } = frontmatter(`.claude/skills/${name}/SKILL.md`);
+    expect(fields.name).toBe(name);
+    expect(fields.description).toBeTruthy();
+    expect(BUILT_INS).not.toContain(name);
+  });
 
   it("only Daniel can trigger /pr, since it pushes and opens a PR (S9-AC2)", () => {
     expect(
@@ -193,6 +193,7 @@ describe(".claude/skills", () => {
     expect(body).toMatch(/Status: \*\*Draft\*\*/);
     expect(body).toMatch(/docs\/specs\/_template\.md/);
     expect(body).toMatch(/\*\*Stop\.\*\*/);
+    expect(body).toMatch(/Write `docs\/specs\/<slug>\.md`/);
     expect(body).toMatch(/Never set `Status: Approved` yourself/);
   });
 

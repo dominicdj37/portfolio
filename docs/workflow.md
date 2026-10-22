@@ -44,20 +44,20 @@ flowchart LR
   N --> A
 ```
 
-| Stage              | Who                                                                                            | Output                                                 | Exit condition                      |
-| ------------------ | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------- |
-| 1. Backlog         | Daniel (Claude drafts)                                                                         | GitHub issue with goal + link to plan section          | Issue is small enough for one PR    |
-| 2. Spec            | Claude drafts (`/spec`; may plan in plan mode, writes the file after leaving it), Daniel edits | `docs/specs/<feature>.md` with `Status: Draft`         | Daniel sets `Status: Approved`      |
-| 3. Branch          | Claude                                                                                         | `feat/<feature>` branch or git worktree                | Clean tree, up to date with `main`  |
-| 4. Tests first     | Claude                                                                                         | Failing unit / component / e2e tests from the criteria | Tests fail for the right reason     |
-| 5. Implement       | Claude                                                                                         | Code in small commits                                  | Tests pass locally                  |
-| 6. Local gates     | Hooks (automatic)                                                                              | Format, lint, typecheck, unit tests                    | All green                           |
-| 7. Self-review     | `/self-review` → `reviewer` subagent                                                           | Review notes, fixes applied                            | No blocking findings                |
-| 8. PR              | Claude                                                                                         | PR with template filled, screenshots                   | CI triggered                        |
-| 9. CI + preview    | GitHub Actions + Vercel                                                                        | Gate results, preview URL                              | All required checks green           |
-| 10. Human review   | Daniel                                                                                         | Approve / request changes                              | Diff read, preview checked on phone |
-| 11. Merge + deploy | Daniel                                                                                         | Squash merge → production                              | Post-deploy smoke test passes       |
-| 12. Learn          | Daniel + Claude                                                                                | Retro note, `CLAUDE.md` / spec updates                 | Lessons written back into the repo  |
+| Stage              | Who                                                                                     | Output                                                 | Exit condition                      |
+| ------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------- |
+| 1. Backlog         | Daniel (Claude drafts)                                                                  | GitHub issue with goal + link to plan section          | Issue is small enough for one PR    |
+| 2. Spec            | Claude drafts (`/spec`, no plan mode; `Status: Draft` + stop is the gate), Daniel edits | `docs/specs/<feature>.md` with `Status: Draft`         | Daniel sets `Status: Approved`      |
+| 3. Branch          | Claude                                                                                  | `feat/<feature>` branch or git worktree                | Clean tree, up to date with `main`  |
+| 4. Tests first     | Claude                                                                                  | Failing unit / component / e2e tests from the criteria | Tests fail for the right reason     |
+| 5. Implement       | Claude                                                                                  | Code in small commits                                  | Tests pass locally                  |
+| 6. Local gates     | Hooks (automatic)                                                                       | Format, lint, typecheck, unit tests                    | All green                           |
+| 7. Self-review     | `/self-review` → `reviewer` subagent                                                    | Review notes, fixes applied                            | No blocking findings                |
+| 8. PR              | Claude                                                                                  | PR with template filled, screenshots                   | CI triggered                        |
+| 9. CI + preview    | GitHub Actions + Vercel                                                                 | Gate results, preview URL                              | All required checks green           |
+| 10. Human review   | Daniel                                                                                  | Approve / request changes                              | Diff read, preview checked on phone |
+| 11. Merge + deploy | Daniel                                                                                  | Squash merge → production                              | Post-deploy smoke test passes       |
+| 12. Learn          | Daniel + Claude                                                                         | Retro note, `CLAUDE.md` / spec updates                 | Lessons written back into the repo  |
 
 ---
 
