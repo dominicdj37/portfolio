@@ -17,6 +17,7 @@
     "format:check": "prettier --check .",
     "e2e": "playwright test",
     "e2e:mobile": "playwright test --project=android --project=iphone",
+    "smoke": "playwright test --config playwright.smoke.config.ts",
     "lhci": "lhci autorun",
     "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm e2e",
     "verify:full": "pnpm verify && pnpm lhci"

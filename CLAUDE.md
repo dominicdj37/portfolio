@@ -14,6 +14,7 @@ Windows dev machine, Linux CI. Use forward slashes and cross-platform Node scrip
 - `pnpm test` (Vitest, `tests/unit/**`) | `pnpm test --changed`
 - `pnpm e2e` (Playwright: android, iphone, desktop) | `pnpm e2e:mobile`. Both run against the production server, so run `pnpm build` first.
 - `pnpm lhci` (Lighthouse CI on `/`, needs a build)
+- `BASE_URL=<url> pnpm smoke` (post-deploy smoke test against a deployed site; CI runs it after each Production deploy)
 - `pnpm verify` = `format:check → lint → typecheck → test → build → e2e`
 - `pnpm verify:full` = `verify` + `lhci`
 - Phase 4, not yet available: `pnpm assets:optimize` | `pnpm assets:check`

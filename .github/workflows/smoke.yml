@@ -1,0 +1,49 @@
+name: Production smoke
+
+# S10: after Vercel reports a successful production deploy, check the live site.
+# Deployment URLs are behind Vercel Deployment Protection, so the event is only
+# the trigger: the test runs against the public production domain below.
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: URL to check (defaults to the production domain)
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: smoke-production
+  cancel-in-progress: true
+
+env:
+  # Update when the custom domain lands (Phase 5, plan P6).
+  PRODUCTION_URL: https://portfolio-mu-inky-3anc9yn1ky.vercel.app
+
+jobs:
+  smoke:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm smoke
+        env:
+          BASE_URL: ${{ inputs.base_url || env.PRODUCTION_URL }}
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: smoke-report
+          path: playwright-report/
+          retention-days: 14
