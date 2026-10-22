@@ -15,10 +15,9 @@ This skill writes **one file** and changes nothing else: no branch, no tests, no
 1. **Gather context.**
    - For an issue number, read it with `gh issue view <n>`.
    - Read `CLAUDE.md`, the matching section of `docs/plan.md`, any related spec in `docs/specs/`, and the accepted ADRs in `docs/adr/`.
-   - For content work, read `docs/content/claims.md`.
    - Don't read `docs/private/`.
 2. **Check that it's new.** If a spec for this feature already exists, update that file instead and keep its Status. If its Status is Approved, ask Daniel before changing anything, because an edit to an approved spec needs his approval again.
-3. **Ask, don't guess.** Ask Daniel about anything you can't settle from the repo: what the visitor gets, scope boundaries, copy, and any metric or claim. Never invent numbers, employers, dates or results. A claim that isn't in `claims.md` with a source goes under "Risks / open questions", not into the spec.
+3. **Ask, don't guess.** Ask Daniel about anything you can't settle from the repo: what the visitor gets, scope boundaries, copy, and any metric or claim. Never invent numbers, employers, dates or results. Content Daniel gives you goes into the spec as written; anything he hasn't given goes under "Risks / open questions".
 4. **Write `docs/specs/<slug>.md`** from `docs/specs/_template.md`. Use a short kebab-case slug, matching the branch you'd later create (`feat/<slug>`).
    - Keep the template's headings and order.
    - Set the status line to exactly `Status: **Draft** <!-- only Daniel changes this to Approved -->`.

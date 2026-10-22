@@ -42,32 +42,3 @@ describe("no client components", () => {
     expect(offenders).toEqual([]);
   });
 });
-
-describe("claims.md", () => {
-  // AC8: the file exists with its sections and no claims yet.
-  it("exists with headings and no claim rows", () => {
-    const text = readFileSync(join(root, "docs/content/claims.md"), "utf8");
-
-    expect(text).toMatch(/^# Claims/m);
-    for (const section of [
-      "Identity",
-      "Experience",
-      "Projects",
-      "Metrics",
-      "Links",
-    ]) {
-      expect(text).toMatch(new RegExp(`^## ${section}$`, "m"));
-    }
-
-    const tableRows = text
-      .split("\n")
-      .filter((line) => line.trimStart().startsWith("|"));
-    const headerRows = tableRows.filter((line) => /\|\s*Claim\s*\|/.test(line));
-    const separatorRows = tableRows.filter((line) =>
-      /^\s*\|[\s|:-]+\|\s*$/.test(line),
-    );
-    // Only each section's header and separator; no claim rows.
-    expect(tableRows.length).toBe(headerRows.length + separatorRows.length);
-    expect(headerRows.length).toBe(5);
-  });
-});

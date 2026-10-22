@@ -5,7 +5,7 @@
 > **Working title:** **Engineering Beyond Mobile**  
 > **Owner / portfolio subject:** Daniel Dominic  
 > **Source:** `daniel_dominic_resume_2026_generic.pdf` (2 pages) and earlier planning discussions (not in the repo).  
-> **Private notes:** open questions, verification items and permission checklists live in `docs/private/plan-notes.md`, which is gitignored and exists only on Daniel's machine. Treat any claim marked "pending verification" as unpublishable.
+> **Private notes:** open questions, verification items and permission checklists live in `docs/private/plan-notes.md`, which is gitignored and exists only on Daniel's machine. Content ships once Daniel puts it in an Approved spec.
 
 ---
 
@@ -338,7 +338,7 @@ Support hiring, open-source collaborations, and relevant project inquiries witho
 
 > From architecture to launch: building a production smart-home Android experience, with real-time integrations and a custom mobile AR rendering stack.
 
-**Needs verification / assets:** pending verification (see private notes). Nothing in this section ships until it is in `docs/content/claims.md`.
+**Needs verification / assets:** pending verification (see private notes). Nothing in this section ships until Daniel puts it in an Approved spec.
 
 ### 6.2 BeVigil — full-stack and security case study
 

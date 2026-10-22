@@ -46,7 +46,7 @@ Sprint 0's story in six beats:
 | ------------------------------------------ | --------------------------------------------------- | -------------------------------------------------------- |
 | Approves every spec                        | Drafts specs, then stops and waits                  | Branch protection: no direct pushes to `main`            |
 | Owns architecture decisions (ADRs)         | Writes failing tests first, then the implementation | Permission rules: no merging, no prod deploy, no secrets |
-| Signs off every public claim               | Runs the full local check suite before any PR       | Hooks: auto-format, block protected paths                |
+| Writes every public word into the spec     | Runs the full local check suite before any PR       | Hooks: auto-format, block protected paths                |
 | Reads every diff, checks UI on real phones | Runs an independent AI review of its own branch     | CI: 6 required checks, performance and a11y budgets      |
 | Merges and ships                           | Writes retros and proposes rule changes             | Post-deploy smoke test on production                     |
 
@@ -113,7 +113,7 @@ No single layer is trusted on its own. Each one catches what the layer before it
 Rules that make the layers bite:
 
 - **Never weaken a test to get green.** Never loosen a budget without a PR that says why.
-- **Every public claim needs a source** in [`docs/content/claims.md`](docs/content/claims.md). The agent may not invent metrics.
+- **Content comes from the spec.** Whatever Daniel writes there ships; the agent may not invent metrics or anything else.
 - **Small PRs:** one spec per PR, about 400 changed lines at most.
 
 ---
@@ -171,14 +171,14 @@ Each repeated correction becomes a rule in `CLAUDE.md`, a hook, a test or an age
 
 ## What's next
 
-| Phase                        | Goal                                                                | New agent tooling                                                 |
-| ---------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| **0 · Content audit**        | Real copy and project write-ups, every claim sourced in `claims.md` | `content-checker` agent: flags any unsourced number, date or link |
-| **1 · Design system + home** | Design tokens, components, the real home page                       | Visual-regression baselines (only Daniel can update them)         |
-| **2 · Case studies**         | Project deep-dives built on MDX                                     | `content-checker` on every content PR                             |
-| **3 · Engineering Lab**      | An interactive architecture explorer                                | Component tests for every interaction                             |
-| **4 · 3D workspace**         | An optional 3D scene at `/explore`, with a full 2D fallback         | Asset pipeline agent, 3D budgets (download size, triangles)       |
-| **5 · Launch**               | Custom domain, SEO switched on (`noindex` removed), analytics       | Link checker, release tagging                                     |
+| Phase                        | Goal                                                          | New agent tooling                                           |
+| ---------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------- |
+| **0 · Content audit**        | Real copy and project write-ups, written into specs           | —                                                           |
+| **1 · Design system + home** | Design tokens, components, the real home page                 | Visual-regression baselines (only Daniel can update them)   |
+| **2 · Case studies**         | Project deep-dives built on MDX                               | Reviewer checks copy matches the spec                       |
+| **3 · Engineering Lab**      | An interactive architecture explorer                          | Component tests for every interaction                       |
+| **4 · 3D workspace**         | An optional 3D scene at `/explore`, with a full 2D fallback   | Asset pipeline agent, 3D budgets (download size, triangles) |
+| **5 · Launch**               | Custom domain, SEO switched on (`noindex` removed), analytics | Link checker, release tagging                               |
 
 Tooling held back until a real need appears:
 
@@ -220,6 +220,5 @@ docs/plan.md            what is being built
 docs/workflow.md        how it is built
 docs/specs/             one approved spec per change
 docs/adr/               architecture decisions
-docs/content/claims.md  the source for every public claim
 CLAUDE.md               the agent's project guide
 ```

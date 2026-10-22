@@ -30,7 +30,7 @@ CI (`.github/workflows/ci.yml`) runs `static`, `typecheck`, `unit`, `build`, `e2
 - Never loosen a budget or threshold silently (lighthouserc.json, lint rules, tsconfig). Propose it in a PR with the reason, and update docs/workflow.md §6 and the ADR.
 - Server components by default; `"use client"` only where interaction needs it. The home page JS budget is 150 KB, and Next.js + React already use ~134 KB of it.
 - Next.js 16 differs from older versions. Check the version-matched docs in `node_modules/next/dist/docs/` before using a Next.js API.
-- Every public claim must exist in docs/content/claims.md with a source. Never invent metrics. Anything marked "pending verification" is unpublishable.
+- Public content (numbers, titles, employers, dates, results, links) comes from the Approved spec. Whatever Daniel puts there can ship as written. Never invent anything the spec doesn't give.
 - No new dependency without stating why in the PR description.
 - Keep PRs small: one spec (or one Sprint 0 slice) per PR, on a `feat/*`, `fix/*`, `content/*` or `chore/*` branch, with conventional commits.
 
