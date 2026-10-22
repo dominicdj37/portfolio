@@ -9,7 +9,7 @@
 
 ## 1. Operating principles
 
-1. **Humans decide, agents execute.** Daniel owns specs, architecture decisions, content claims, review, merge and release. Claude Code writes code, tests, scripts and drafts.
+1. **Humans decide, agents execute.** Daniel owns specs (including all public content), architecture decisions, review, merge and release. Claude Code writes code, tests, scripts and drafts.
 2. **Spec before code.** No implementation starts without a written spec with acceptance criteria that Daniel has approved.
 3. **Small vertical slices.** One feature or fix per branch and PR, ideally under ~400 changed lines. Big diffs are where agents hide mistakes.
 4. **Tests are the contract.** A slice is done when its acceptance criteria are encoded as tests and every gate is green — not when the agent says it's done.
@@ -77,7 +77,7 @@ flowchart LR
 | Performance            | Lighthouse CI                                                              | Mobile budgets per route, run against a local production build in CI                                         |
 | Bundle size            | Lighthouse CI script-size assertion; `@next/bundle-analyzer` for diagnosis | Fails if JS budget exceeded; analyzer added when first needed                                                |
 | 3D asset checks        | `gltf-transform` CLI + custom budget script                                | Size, triangles, textures per `/explore` budget                                                              |
-| Links / content        | Link checker + claims check script                                         | Catches dead Play Store / LinkedIn links                                                                     |
+| Links / content        | Link checker                                                               | Catches dead Play Store / LinkedIn links                                                                     |
 | CI                     | GitHub Actions                                                             | Required checks on every PR                                                                                  |
 | Hosting                | Vercel                                                                     | Preview deploy per PR, production on `main`                                                                  |
 | Source of truth        | GitHub (issues, PRs, projects board)                                       | Backlog and history in one place                                                                             |
@@ -98,8 +98,6 @@ portfolio/
 │   │   └── _template.md
 │   ├── adr/                   # architecture decision records
 │   │   └── 0001-nextjs-r3f-stack.md
-│   ├── content/
-│   │   └── claims.md          # every public claim + its source (resume line, link)
 │   └── private/               # gitignored: open questions, permissions, unverified items
 ├── assets-raw/                # downloaded 3D packs, never shipped (.gitignore)
 ├── LICENSES-ASSETS.md         # attribution for every third-party asset
@@ -133,7 +131,7 @@ Mobile-first. Content is 2D and must never depend on WebGL. 3D lives at /explore
   If none exists, write one with `Status: Draft` and stop.
 - Write or update tests before implementation. Never delete or skip a failing test to get green.
 - Server components by default; "use client" only where interaction needs it.
-- Every public claim must exist in docs/content/claims.md with a source. Never invent metrics.
+- Public content comes from the Approved spec. Never invent anything the spec doesn't give.
 - No new dependency without stating why in the PR description.
 - Keep PRs small: one spec per PR.
 
@@ -211,14 +209,13 @@ Sprint 0 builds only **format on write** and **protected paths** (`.claude/hooks
 
 ### 5.3 Subagents (`.claude/agents/`)
 
-Sprint 0 builds only **`reviewer`**. `content-checker` comes with Phase 0 claims; `test-writer` and `perf-a11y-auditor` are deferred, since CI already enforces tests and budgets (Sprint 0 spec, Q8).
+Sprint 0 builds only **`reviewer`**. `test-writer` and `perf-a11y-auditor` are deferred, since CI already enforces tests and budgets (Sprint 0 spec, Q8).
 
 | Agent                        | Tools                                    | Job                                                                                                                                                                                                                 |
 | ---------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `reviewer`                   | Read-only + run tests                    | Reviews the branch diff against the spec, ADRs and `CLAUDE.md`; flags bugs, missing tests, a11y issues, scope creep. Never edits: its tool list has no Edit/Write, and its prompt forbids writes through Bash (W9). |
 | `test-writer`                | Read + write under `tests/`              | Turns acceptance criteria into Vitest/Playwright tests before implementation                                                                                                                                        |
 | `perf-a11y-auditor`          | Read + run Lighthouse/axe/bundle scripts | Runs budgets on the preview or local build and reports regressions with likely causes                                                                                                                               |
-| `content-checker`            | Read-only                                | Compares every number, title, date and link in `content/` against `docs/content/claims.md`; flags anything unsourced                                                                                                |
 | `asset-pipeline` _(Phase 4)_ | Read + run `assets:*` scripts            | Optimizes new 3D assets, checks budgets, updates `LICENSES-ASSETS.md`                                                                                                                                               |
 
 Using a separate reviewer means the code isn't graded by the same context that wrote it.
@@ -231,7 +228,7 @@ Sprint 0 builds only **`/spec`**, **`/self-review`** and **`/pr`**. `/implement`
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/spec <issue>`                 | Read the issue, plan section and ADRs; ask Daniel what the repo can't answer; write `docs/specs/<feature>.md` from the template with `Status: Draft`; stop for approval. Skips plan mode, so `Status: Draft` + stop is the gate (W1)  |
 | `/implement <spec>`             | Refuse unless `Status: Approved` → create branch → call `test-writer` → implement in small commits until tests pass → run `pnpm verify`                                                                                               |
-| `/self-review`                  | Run `reviewer` on the branch diff; apply its mechanical fixes; list judgement calls for Daniel. Until `content-checker` exists, check claims against `claims.md` by hand                                                              |
+| `/self-review`                  | Run `reviewer` on the branch diff; apply its mechanical fixes; list judgement calls for Daniel                                                                                                                                        |
 | `/pr`                           | Daniel-only (`disable-model-invocation`). Fill the PR template (AC → test map, proof of red, decisions to review), push, open the PR with `gh`. Screenshots are captured locally for Daniel to attach, since `gh` can't upload images |
 | `/ci-fix`                       | Read failing CI logs, reproduce locally, fix, push to the same branch                                                                                                                                                                 |
 | `/add-asset <file>` _(Phase 4)_ | Run the 3D asset pipeline (§7) on a new model and report budget impact                                                                                                                                                                |
@@ -261,7 +258,7 @@ Run at most two agent streams at once, each in its own **git worktree** (for exa
 | Accessibility     | WCAG 2.2 AA basics, keyboard paths                               | axe + Playwright keyboard tests                    | CI on every PR                                   |
 | Performance       | Core Web Vitals proxies, JS budget                               | Lighthouse CI (mobile), bundle check               | CI on every PR                                   |
 | 3D                | Scene loads, hotspots work, fallback works, assets within budget | Playwright (WebGL on and off), asset budget script | CI on PRs touching `/explore` or `public/models` |
-| Content           | No dead links, no unsourced claims                               | Link checker, `content-checker` agent              | CI + before release                              |
+| Content           | No dead links                                                    | Link checker                                       | CI + before release                              |
 | Real device       | Touch feel, frame rate, tilt permission, readability             | Daniel on a mid-range Android phone + iPhone       | Before merging UI work                           |
 
 ### Core e2e journeys (must always pass)
@@ -352,7 +349,6 @@ Spec: docs/specs/<feature>.md · Closes #<issue>
 - [ ] pnpm verify green locally
 - [ ] /self-review (reviewer subagent): no blocking findings
 - [ ] No new dependency (or justified below)
-- [ ] No unsourced claims (content-checker run if content changed)
 - [ ] Tested on a real phone (UI changes)
 ```
 
@@ -388,7 +384,7 @@ install (pnpm, cached)
 | Checkpoint                             | Why it stays human                                   |
 | -------------------------------------- | ---------------------------------------------------- |
 | Approving each spec                    | Decides what gets built and how much                 |
-| Every public claim and case-study text | Accuracy, NDA and employer permissions               |
+| All public content and case-study text | Accuracy, NDA and employer permissions               |
 | Reading the PR diff                    | Agents can pass tests while doing the wrong thing    |
 | Real-phone check for UI                | Feel, readability and touch can't be fully automated |
 | Updating visual baselines              | Prevents "fixing" a regression by accepting it       |
@@ -402,9 +398,9 @@ install (pnpm, cached)
 | Plan phase                      | Workflow focus                                                                                                                       | Notable agent work                                                                            |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
 | **Sprint 0 — Foundation** (new) | Repo scaffold, CI, hooks, `CLAUDE.md`, subagents, skills, Vercel, branch protection, one trivial page shipped through the full cycle | Claude scaffolds everything; Daniel reviews config carefully — it governs every later session |
-| Phase 0 — Content audit         | Mostly human; Claude drafts copy and `claims.md` from the resume                                                                     | `content-checker` set up early                                                                |
+| Phase 0 — Content audit         | Mostly human; Claude drafts copy from the resume, Daniel finalizes it in specs                                                       | —                                                                                             |
 | Phase 1 — Design system + home  | Tokens, layout, components, home page                                                                                                | Visual baselines established here                                                             |
-| Phase 2 — Case studies          | MDX pipeline, case-study components, four pages                                                                                      | `content-checker` on every content PR                                                         |
+| Phase 2 — Case studies          | MDX pipeline, case-study components, four pages                                                                                      | Reviewer checks copy matches the spec                                                         |
 | Phase 3 — Lab MVP               | Architecture Explorer as standalone component                                                                                        | Component tests for every node interaction                                                    |
 | Phase 4 — 3D Workspace          | Asset pipeline, `/explore`, fallback, tilt mode                                                                                      | `asset-pipeline` + 3D e2e + budgets                                                           |
 | Phase 5 — Launch                | Domain, SEO, analytics, release tag                                                                                                  | Production smoke tests, link check                                                            |
@@ -432,7 +428,7 @@ Every repeated correction should end up in `CLAUDE.md`, a hook, a test or a suba
 | ---------------------------------------------- | ----------------------------------------------------------------------------------- |
 | Agent drifts from the plan or invents features | Spec-first rule, reviewer subagent checks scope, small PRs                          |
 | Tests weakened to get green                    | `CLAUDE.md` rule, reviewer flags deleted/skipped tests, baselines protected by hook |
-| Invented or overstated career claims           | `claims.md` source of truth + `content-checker` + human sign-off                    |
+| Invented or overstated career claims           | Content only from Approved specs + reviewer flags anything else + human sign-off    |
 | Employer-confidential material leaks           | Never-commit rules, protected paths, human review of every media asset              |
 | Dependency bloat slows mobile                  | New deps need approval; bundle budget in CI                                         |
 | 3D scene too heavy on phones                   | Asset budget script, Lighthouse on `/explore`, automatic low-end fallback           |
@@ -448,4 +444,4 @@ Every repeated correction should end up in `CLAUDE.md`, a hook, a test or a suba
 2. Open Claude Code in the repo and run Sprint 0 as its first spec: scaffold, CI, hooks, `CLAUDE.md`, subagents, skills, Vercel preview.
 3. Ship a placeholder home page through the full cycle to prove every gate works.
 4. Pick 2–3 candidate asset packs and an HDRI; prototype the desk composition in a throwaway branch.
-5. Start Phase 0 content work in parallel (claims, case-study drafts, permissions).
+5. Start Phase 0 content work in parallel (copy, case-study drafts, permissions).

@@ -24,7 +24,6 @@ The caller gives you the branch, the base to compare against (default `origin/ma
 2. `git log <base>..HEAD --oneline` for the commits.
 3. **The spec.** It lives in `docs/specs/`. Use the caller's path, or match the branch name or the diff. Its `Status:` line must say **Approved**. A Draft spec, or none at all, is a blocking finding. Sprint 0 slices are covered by `docs/specs/sprint-0-foundation.md` and its slice ID (S1–S11).
 4. `CLAUDE.md`, the ADRs in `docs/adr/` (only Accepted ones bind; Proposed ones are context), and the sections of `docs/workflow.md` the change touches (§6 for budgets, §8 for PRs).
-5. When content changes: `docs/content/claims.md`.
 
 ## What to check
 
@@ -35,7 +34,7 @@ Work through every item. Cite the source of each rule you apply.
 3. **Scope.** Is anything in the diff outside the spec's scope, or in its "Out of scope" list? Is anything in scope missing? Is the PR one spec or slice, around 400 changed lines or less, excluding the lockfile?
 4. **Guardrails.** Are budgets, thresholds, lint rules, `tsconfig.json`, `lighthouserc.json` or `.claude/settings.json` loosened? That needs a stated reason, plus updates to `docs/workflow.md` §6 and the ADR. Does any new dependency lack a stated reason? Is there a new gate without a proof of red?
 5. **CLAUDE.md rules.** Server components by default, and `"use client"` only where interaction needs it. Home-page JS stays within 150 KB. Content never depends on WebGL. No camera/AR. Nothing from `.env*`, `assets-raw/` or `docs/private/`. Next.js 16 APIs match `node_modules/next/dist/docs/`. Scripts are cross-platform (Windows dev, Linux CI).
-6. **Claims.** Every public number, title, employer, date or metric must be in `docs/content/claims.md` with a source and not marked "pending verification". Treat an invented or unsourced claim as blocking.
+6. **Content.** Every public number, title, employer, date or metric must come from the Approved spec. Treat invented content, anything the spec doesn't give, as blocking.
 7. **Correctness.** Bugs, unhandled edge cases, race conditions, broken error paths, and wrong types hidden by casts or `!`.
 8. **Accessibility and mobile.** Semantic HTML, alt text, labels, heading order, visible focus, `prefers-reduced-motion`, touch targets, and no horizontal scroll at 320 px.
 9. **Readability.** Naming, dead code, and comments that disagree with the code. Keep these as nits unless they hide a bug.

@@ -29,7 +29,6 @@ The reviewer runs in a separate context, so the code isn't graded by the same co
    - **Don't apply, list for Daniel:** anything marked _judgement call_; anything that changes scope or deviates from the spec; anything that edits a budget, threshold, lint rule, `tsconfig.json`, `lighthouserc.json`, `.claude/**` permissions or a test's expectations; and any finding you disagree with. Give your reasoning, briefly, next to the reviewer's.
    - Never skip, delete or weaken a test to answer a finding.
 4. **Re-check.** After fixes, run `pnpm verify`, or at least `pnpm format:check && pnpm lint && pnpm typecheck && pnpm test` when only non-UI code changed. If a _blocking_ finding was fixed, run the reviewer once more on the new diff. Stop after two rounds and report whatever is still open.
-5. **Content.** The `content-checker` agent doesn't exist yet (Sprint 0, Q8). If `content/`, `app/` copy or `docs/content/` changed, check every public claim against `docs/content/claims.md` yourself and report the result.
 
 ## Report
 
