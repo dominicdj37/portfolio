@@ -84,3 +84,33 @@ describe(".claude/settings.json permissions", () => {
     expect(allow.filter((rule) => FORBIDDEN_ALLOW.includes(rule))).toEqual([]);
   });
 });
+
+// S8-AC5: both hooks stay registered, so removing one is a visible, failing diff.
+type HookGroup = {
+  matcher?: string;
+  hooks?: { type?: string; command?: string }[];
+};
+const hooks = (settings as { hooks?: Record<string, HookGroup[]> }).hooks ?? {};
+
+const registered = (event: string, script: string) =>
+  (hooks[event] ?? []).filter((group) =>
+    group.hooks?.some((hook) =>
+      hook.command?.includes(`.claude/hooks/${script}`),
+    ),
+  );
+
+describe(".claude/settings.json hooks", () => {
+  it.each([
+    [
+      "PreToolUse",
+      "protect-paths.mjs",
+      ["Edit", "Write", "NotebookEdit", "Bash", "PowerShell"],
+    ],
+    ["PostToolUse", "format-on-write.mjs", ["Edit", "Write"]],
+  ])("registers %s %s for %j", (event, script, tools) => {
+    const matchers = registered(event, script).flatMap((group) =>
+      (group.matcher ?? "").split("|"),
+    );
+    expect(matchers).toEqual(expect.arrayContaining(tools));
+  });
+});
