@@ -227,15 +227,15 @@ Using a separate reviewer means the code isn't graded by the same context that w
 
 Sprint 0 builds only **`/spec`**, **`/self-review`** and **`/pr`**. `/implement`, `/ci-fix` and `/retro` are deferred; until then, the stages they would run happen by hand in the session (Sprint 0 spec, Q8).
 
-| Command                         | What it does                                                                                                                                                                   |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `/spec <issue>`                 | Read the issue + plan section, plan (plan mode is read-only, so the file is written after leaving it), write `docs/specs/<feature>.md` with `Status: Draft`, stop for approval |
-| `/implement <spec>`             | Refuse unless `Status: Approved` → create branch → call `test-writer` → implement in small commits until tests pass → run `pnpm verify`                                        |
-| `/self-review`                  | Run `reviewer` (and `content-checker` if content changed); apply non-controversial fixes; list the rest                                                                        |
-| `/pr`                           | Fill the PR template, attach mobile screenshots from Playwright, open the PR with `gh`                                                                                         |
-| `/ci-fix`                       | Read failing CI logs, reproduce locally, fix, push to the same branch                                                                                                          |
-| `/add-asset <file>` _(Phase 4)_ | Run the 3D asset pipeline (§7) on a new model and report budget impact                                                                                                         |
-| `/retro`                        | Summarize what went wrong/right on the merged PR and propose `CLAUDE.md` edits for Daniel to approve                                                                           |
+| Command                         | What it does                                                                                                                                                                                                                          |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/spec <issue>`                 | Read the issue, plan section and ADRs; ask Daniel what the repo can't answer; write `docs/specs/<feature>.md` from the template with `Status: Draft`; stop for approval. Skips plan mode, so `Status: Draft` + stop is the gate (W1)  |
+| `/implement <spec>`             | Refuse unless `Status: Approved` → create branch → call `test-writer` → implement in small commits until tests pass → run `pnpm verify`                                                                                               |
+| `/self-review`                  | Run `reviewer` on the branch diff; apply its mechanical fixes; list judgement calls for Daniel. Until `content-checker` exists, check claims against `claims.md` by hand                                                              |
+| `/pr`                           | Daniel-only (`disable-model-invocation`). Fill the PR template (AC → test map, proof of red, decisions to review), push, open the PR with `gh`. Screenshots are captured locally for Daniel to attach, since `gh` can't upload images |
+| `/ci-fix`                       | Read failing CI logs, reproduce locally, fix, push to the same branch                                                                                                                                                                 |
+| `/add-asset <file>` _(Phase 4)_ | Run the 3D asset pipeline (§7) on a new model and report budget impact                                                                                                                                                                |
+| `/retro`                        | Summarize what went wrong/right on the merged PR and propose `CLAUDE.md` edits for Daniel to approve                                                                                                                                  |
 
 ### 5.5 MCP servers (optional, add when needed)
 

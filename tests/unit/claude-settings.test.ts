@@ -187,21 +187,27 @@ describe(".claude/skills", () => {
     ).toBe("true");
   });
 
-  it("/spec writes a Draft and never approves (S9-AC3)", () => {
+  // One assertion per clause of S9-AC3, so dropping a clause from a skill fails.
+  it("/spec writes a Draft from the template, stops, and never approves (S9-AC3)", () => {
     const { body } = frontmatter(".claude/skills/spec/SKILL.md");
     expect(body).toMatch(/Status: \*\*Draft\*\*/);
     expect(body).toMatch(/docs\/specs\/_template\.md/);
+    expect(body).toMatch(/\*\*Stop\.\*\*/);
+    expect(body).toMatch(/Never set `Status: Approved` yourself/);
   });
 
-  it("/self-review delegates to the reviewer agent (S9-AC3)", () => {
-    expect(frontmatter(".claude/skills/self-review/SKILL.md").body).toMatch(
-      /reviewer/,
-    );
+  it("/self-review runs reviewer, applies mechanical fixes, lists the rest (S9-AC3)", () => {
+    const { body } = frontmatter(".claude/skills/self-review/SKILL.md");
+    expect(body).toMatch(/Launch the `reviewer` subagent/);
+    expect(body).toMatch(/\*\*Apply\*\* fixes the reviewer marks _mechanical_/);
+    expect(body).toMatch(/\*\*Don't apply, list for Daniel:\*\*/);
   });
 
-  it("/pr uses the PR template and gh (S9-AC3)", () => {
+  it("/pr fills the template with AC → test map and proof of red, then uses gh (S9-AC3)", () => {
     const { body } = frontmatter(".claude/skills/pr/SKILL.md");
     expect(body).toMatch(/\.github\/pull_request_template\.md/);
+    expect(body).toMatch(/\*\*AC → test map:\*\*/);
+    expect(body).toMatch(/\*\*Proof of red\*\*/);
     expect(body).toMatch(/gh pr create/);
   });
 });

@@ -31,7 +31,7 @@ Stop and report if any of these fail:
 
 ## Write and open
 
-1. Fill in `.github/pull_request_template.md` and keep its headings in the same order:
+1. Fill in `.github/pull_request_template.md` and keep its headings in order. Add **Proof of red** and **Decisions to review** sections after Acceptance criteria:
    - **What / why:** `Spec: docs/specs/<file> (<slice ID>) · Closes #<issue>` (or `#— (no issue)`), then two or three plain sentences.
    - **Acceptance criteria:** one checkbox per AC, as `AC — test: <file> (<test name>)`. Tick a box only when its test exists and passes. Manual ACs stay unticked with **Daniel:** and what he needs to do.
    - **Proof of red**, **Decisions to review**, **Screenshots** and **Checks** as gathered above. Tick a Checks box only if it's true, and write "n/a" with a reason where it doesn't apply.
