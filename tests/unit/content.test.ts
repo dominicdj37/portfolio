@@ -201,7 +201,8 @@ describe("no placeholder content", () => {
     for (const file of readdirSync(dir)) {
       const text = readFileSync(join(dir, file), "utf8");
       expect(text, file).not.toMatch(
-        /\bTODO\b|\bTBD\b|example\.com|lorem|\b000\b/i,
+        // Dummy numbers are long zero runs; "500,000+" is real content.
+        /\bTODO\b|\bTBD\b|example\.com|lorem|0{6,}/i,
       );
     }
   });

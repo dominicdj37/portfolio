@@ -51,7 +51,7 @@ describe("client components", () => {
   it("limits client components to the islands the spec lists", () => {
     expect(clientFilesUnder("components").sort()).toEqual([
       "components/case-study/toc-spy.tsx",
-      "components/layout/menu-closer.tsx",
+      "components/layout/nav-state.tsx",
       "components/motion/pointer-tracker.tsx",
     ]);
   });

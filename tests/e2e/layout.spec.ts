@@ -7,13 +7,24 @@ test.describe("layout shell", () => {
   for (const path of PAGES) {
     test(`${path} has a skip link first, one header, main#main and a footer`, async ({
       page,
+      browserName,
     }) => {
       await page.goto(path);
       await expect(page.locator("header")).toHaveCount(1);
       await expect(page.locator("main#main")).toHaveCount(1);
       await expect(page.locator("footer")).toHaveCount(1);
 
-      await page.keyboard.press("Tab");
+      if (browserName === "webkit") {
+        // WebKit's Tab skips links by default (Safari's "Press Tab to
+        // highlight each item" is off), so focus the first focusable element
+        // in document order directly.
+        await page
+          .locator("a[href], button, input, [tabindex]:not([tabindex='-1'])")
+          .first()
+          .focus();
+      } else {
+        await page.keyboard.press("Tab");
+      }
       const focused = page.locator(":focus");
       await expect(focused).toHaveAttribute("href", "#main");
       await expect(focused).toHaveText("Skip to content");
@@ -63,7 +74,10 @@ test.describe("mobile menu", () => {
   }) => {
     await page.goto("/");
     const menu = page.getByRole("button", { name: "Menu" });
-    await menu.click();
+    // Open it from the keyboard: Safari doesn't focus buttons on tap, so
+    // focus return is a keyboard (and screen-reader) behaviour.
+    await menu.focus();
+    await page.keyboard.press("Enter");
 
     const sheet = page.locator("#site-menu");
     await expect(sheet).toBeVisible();

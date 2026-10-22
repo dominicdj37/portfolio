@@ -67,15 +67,19 @@ test.describe("motion", () => {
     page,
   }, testInfo) => {
     await page.goto("/");
-    await page.mouse.move(200, 200);
-    await page.mouse.move(400, 300);
-    const gx = await page.evaluate(() =>
-      document.documentElement.style.getPropertyValue("--gx"),
-    );
+    // The island attaches after hydration.
+    await page.waitForLoadState("networkidle");
+    const gx = async () => {
+      await page.mouse.move(200, 200);
+      await page.mouse.move(400, 300);
+      return page.evaluate(() =>
+        document.documentElement.style.getPropertyValue("--gx"),
+      );
+    };
     if (testInfo.project.name === "desktop") {
-      expect(gx).toBe("400px");
+      await expect.poll(gx).toBe("400px");
     } else {
-      expect(gx).toBe("");
+      expect(await gx()).toBe("");
     }
   });
 
@@ -88,12 +92,21 @@ test.describe("motion", () => {
       for (const sheet of document.styleSheets) {
         for (const rule of sheet.cssRules) {
           if (
-            rule instanceof CSSMediaRule &&
-            rule.conditionText.includes("prefers-reduced-motion: reduce") &&
-            rule.cssText.includes("::view-transition-group") &&
-            rule.cssText.includes("animation: none")
+            !(rule instanceof CSSMediaRule) ||
+            !rule.conditionText.includes("prefers-reduced-motion: reduce")
           ) {
-            return true;
+            continue;
+          }
+          // Chrome serialises "animation: none" in long form, so read the
+          // longhand instead of matching cssText.
+          for (const inner of rule.cssRules) {
+            if (
+              inner instanceof CSSStyleRule &&
+              inner.selectorText.includes("::view-transition-group") &&
+              inner.style.animationName === "none"
+            ) {
+              return true;
+            }
           }
         }
       }
