@@ -29,10 +29,13 @@ describe("placeholder home page", () => {
   it("shows only the name and the coming-soon line", () => {
     const { container } = render(<Home />);
 
-    const texts = Array.from(container.querySelectorAll("*"))
-      .filter((el) => el.children.length === 0)
-      .map((el) => el.textContent.trim())
-      .filter((text) => text !== "");
+    // Every text node, so text next to an element can't slip through.
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    const texts: string[] = [];
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const text = node.textContent?.trim();
+      if (text) texts.push(text);
+    }
     expect(texts).toEqual([NAME, LINE]);
   });
 });
