@@ -5,7 +5,7 @@ test.describe("card → case-study morph", () => {
   test("navigates from a card to its case study, with a view transition where supported", async ({
     page,
     browserName,
-  }) => {
+  }, testInfo) => {
     await page.addInitScript(() => {
       const w = window as typeof window & { __viewTransitions?: number };
       w.__viewTransitions = 0;
@@ -29,9 +29,27 @@ test.describe("card → case-study morph", () => {
         (window as typeof window & { __viewTransitions?: number })
           .__viewTransitions,
     );
-    if (browserName === "chromium") {
+    if (testInfo.project.name !== "desktop") {
+      // Phones skip view transitions: with the sticky card stack, WebKit
+      // hangs the navigation (Daniel, 2026-10-23).
+      expect(count).toBe(0);
+    } else if (browserName === "chromium") {
       expect(count).toBeGreaterThan(0);
     }
+  });
+
+  // AC50 on phones: a tap during load still navigates (CI's Linux WebKit
+  // used to hang here).
+  test("navigates from a card tapped right after load on phones", async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name === "desktop", "phones only");
+    await page.goto("/");
+    expect(await page.evaluate(() => typeof document.startViewTransition)).toBe(
+      "undefined",
+    );
+    await page.locator("#work").getByRole("link", { name: "BeVigil" }).click();
+    await expect(page).toHaveURL(/\/work\/bevigil$/);
   });
 
   // AC50: both ends of the morph share one <ViewTransition name>.
