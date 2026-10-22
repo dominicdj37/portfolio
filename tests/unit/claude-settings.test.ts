@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-// Contract for .claude/settings.json (S7-AC3). Loosening a guardrail means
+// Contract for .claude/ (S7-AC3, S8-AC5, S9-AC1). Loosening a guardrail means
 // editing this list too, so it shows up as a visible diff in review.
 
 const REQUIRED_DENY = [
@@ -112,5 +112,96 @@ describe(".claude/settings.json hooks", () => {
       (group.matcher ?? "").split("|"),
     );
     expect(matchers).toEqual(expect.arrayContaining(tools));
+  });
+});
+
+// S9: the reviewer agent and the core skills. Frontmatter is simple
+// `key: value` lines, so a tiny parser avoids a YAML dependency.
+const frontmatter = (path: string) => {
+  const text = readFileSync(join(process.cwd(), path), "utf8");
+  const match = /^---\r?\n([\s\S]*?)\r?\n---/.exec(text);
+  const fields: Record<string, string> = Object.fromEntries(
+    (match?.[1] ?? "")
+      .split(/\r?\n/)
+      .map((line) => /^([\w-]+):\s*(.*)$/.exec(line))
+      .filter((field) => field !== null)
+      .map(([, key, value]) => [key, value!.trim()]),
+  );
+  return { fields, body: text.slice(match?.[0].length ?? 0) };
+};
+
+describe(".claude/agents/reviewer.md", () => {
+  // Read inside each test, so a missing file fails these tests, not the file.
+  const reviewer = () => frontmatter(".claude/agents/reviewer.md");
+
+  it("is named reviewer and says when to use it", () => {
+    const { fields } = reviewer();
+    expect(fields.name).toBe("reviewer");
+    expect(fields.description).toBeTruthy();
+  });
+
+  it("can read and run checks but has no editing tools (S9-AC1)", () => {
+    // Omitting `tools` would give the agent every tool, including Edit and Write.
+    const tools = (reviewer().fields.tools ?? "").split(",");
+    expect(tools.map((tool) => tool.trim()).sort()).toEqual([
+      "Bash",
+      "Glob",
+      "Grep",
+      "Read",
+    ]);
+  });
+
+  it("reviews against the spec, CLAUDE.md and accepted ADRs", () => {
+    const { body } = reviewer();
+    expect(body).toMatch(/docs\/specs\//);
+    expect(body).toMatch(/CLAUDE\.md/);
+    expect(body).toMatch(/docs\/adr\//);
+  });
+});
+
+describe(".claude/skills", () => {
+  // Built-in commands a skill must not shadow (W6).
+  const BUILT_INS = [
+    "review",
+    "code-review",
+    "security-review",
+    "init",
+    "pr-comments",
+  ];
+
+  it.each(["spec", "self-review", "pr"])(
+    "%s has a SKILL.md named after its folder",
+    (name) => {
+      const { fields } = frontmatter(`.claude/skills/${name}/SKILL.md`);
+      expect(fields.name).toBe(name);
+      expect(fields.description).toBeTruthy();
+      expect(BUILT_INS).not.toContain(name);
+    },
+  );
+
+  it("only Daniel can trigger /pr, since it pushes and opens a PR (S9-AC2)", () => {
+    expect(
+      frontmatter(".claude/skills/pr/SKILL.md").fields[
+        "disable-model-invocation"
+      ],
+    ).toBe("true");
+  });
+
+  it("/spec writes a Draft and never approves (S9-AC3)", () => {
+    const { body } = frontmatter(".claude/skills/spec/SKILL.md");
+    expect(body).toMatch(/Status: \*\*Draft\*\*/);
+    expect(body).toMatch(/docs\/specs\/_template\.md/);
+  });
+
+  it("/self-review delegates to the reviewer agent (S9-AC3)", () => {
+    expect(frontmatter(".claude/skills/self-review/SKILL.md").body).toMatch(
+      /reviewer/,
+    );
+  });
+
+  it("/pr uses the PR template and gh (S9-AC3)", () => {
+    const { body } = frontmatter(".claude/skills/pr/SKILL.md");
+    expect(body).toMatch(/\.github\/pull_request_template\.md/);
+    expect(body).toMatch(/gh pr create/);
   });
 });
