@@ -580,6 +580,13 @@ body::after {
     scroll-behavior: auto;
   }
 
+  /* Delayed entrances would sit in their first frame (blurred, offset)
+     while they wait, so they don't run at all. */
+  .hero-word,
+  .float-in {
+    animation: none;
+  }
+
   [data-marquee-track] {
     animation: none;
     flex-wrap: wrap;
