@@ -133,8 +133,28 @@ describe("checkCommand (Bash/PowerShell, best-effort)", () => {
     "Remove-Item -Recurse -Force .next, coverage",
     "pnpm build 2>&1 | tail -20",
     "echo ok > /dev/null",
+    // Prose that mentions the flags isn't a command
+    "echo blocks Playwright -u and rm -rf app",
   ])("allows %s", (command) => {
     expect(checkCommand(command)).toBeNull();
+  });
+
+  it("treats heredoc bodies as data, not commands", () => {
+    const commit = [
+      "git commit -q -F - <<'EOF'",
+      "chore: hooks",
+      "",
+      "best-effort blocks shell commands, Playwright -u,",
+      "rm -rf app and cp .env.local out",
+      "EOF",
+      "git log --oneline -3",
+    ].join("\n");
+    expect(checkCommand(commit)).toBeNull();
+  });
+
+  it("still checks commands around a heredoc", () => {
+    expect(checkCommand("cat > .env <<EOF\nX=1\nEOF")).not.toBeNull();
+    expect(checkCommand("cat <<-EOF\nhi\n\tEOF\nrm -rf app")).not.toBeNull();
   });
 });
 

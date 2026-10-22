@@ -200,14 +200,14 @@ Write a short ADR (context → decision → consequences) whenever a choice woul
 
 ### 5.2 Hooks (deterministic guardrails)
 
-Sprint 0 builds only **format on write** and **protected paths**. Done check and session context are deferred until a real need appears (Sprint 0 spec, Q8).
+Sprint 0 builds only **format on write** and **protected paths** (`.claude/hooks/*.mjs`, Node scripts with unit-tested decision functions in `tests/unit/hooks/`). Done check and session context are deferred until a real need appears (Sprint 0 spec, Q8).
 
-| Hook            | Trigger                                                      | Action                                                                                              |
-| --------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| Format on write | `PostToolUse` on Edit/Write of `*.ts(x)`, `*.md(x)`, `*.css` | Run Prettier + ESLint `--fix` on that file; report remaining errors back to Claude                  |
-| Protected paths | `PreToolUse` on Edit/Write                                   | Block writes to `.env*`, `assets-raw/`, visual baselines, `public/resume/`; explain why             |
-| Done check      | `Stop`                                                       | Run `pnpm typecheck && pnpm test --changed`; if red, tell Claude to keep going instead of finishing |
-| Session context | `SessionStart`                                               | Print current branch, open spec, and `git status` so each session starts oriented                   |
+| Hook            | Trigger                                                                                       | Action                                                                                                                                                                                                                     |
+| --------------- | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Format on write | `PostToolUse` on Edit/Write of `*.ts(x)`, `*.(m)js`, `*.md(x)`, `*.css`, `*.json`, `*.y(a)ml` | ESLint `--fix` + Prettier on code, Prettier only on the rest; report remaining ESLint problems back to Claude                                                                                                              |
+| Protected paths | `PreToolUse` on Edit/Write/NotebookEdit, and Bash/PowerShell                                  | Block writes to `.env*`, `assets-raw/`, visual baselines, `public/resume/`; explain why. Shell commands are checked best-effort (redirects, `cp`/`mv`/`rm`/`tee`, Playwright `-u`, recursive deletes outside build output) |
+| Done check      | `Stop`                                                                                        | Run `pnpm typecheck && pnpm test --changed`; if red, tell Claude to keep going instead of finishing                                                                                                                        |
+| Session context | `SessionStart`                                                                                | Print current branch, open spec, and `git status` so each session starts oriented                                                                                                                                          |
 
 ### 5.3 Subagents (`.claude/agents/`)
 
