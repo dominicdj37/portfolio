@@ -67,8 +67,7 @@ test.describe("motion", () => {
     page,
   }, testInfo) => {
     await page.goto("/");
-    // The island attaches after hydration.
-    await page.waitForLoadState("networkidle");
+    // The island attaches after hydration; the poll below retries until then.
     const gx = async () => {
       await page.mouse.move(200, 200);
       await page.mouse.move(400, 300);

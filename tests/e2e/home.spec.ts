@@ -55,8 +55,10 @@ test.describe("home page", () => {
   test("never requests Google Fonts at runtime", async ({ page }) => {
     const requests: string[] = [];
     page.on("request", (request) => requests.push(request.url()));
-    await page.reload();
-    await page.waitForLoadState("networkidle");
+    await page.reload({ waitUntil: "load" });
+    // Every font the page uses has been requested by the time this settles.
+    // (networkidle can stall on Next's link prefetching.)
+    await page.evaluate(() => document.fonts.ready.then(() => undefined));
     expect(
       requests.filter((url) => /fonts\.(googleapis|gstatic)\.com/.test(url)),
     ).toEqual([]);
@@ -212,7 +214,10 @@ test.describe("home page", () => {
       expect(await state()).toBe("paused");
     }
 
+    // A visitor's preference applies from page load (WebKit keeps a paused
+    // animation's offset if the preference flips mid-session).
     await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.reload();
     expect(
       await track.evaluate((el) => ({
         name: getComputedStyle(el).animationName,
@@ -220,6 +225,17 @@ test.describe("home page", () => {
       })),
     ).toEqual({ name: "none", wrap: "wrap" });
     await expect(marquee.locator("ul[aria-hidden='true']")).toBeHidden();
+
+    // Wrapped, not clipped: every chip of the visible list fits the viewport.
+    const viewport = page.viewportSize();
+    const chips = marquee.locator("ul:not([aria-hidden]) > li");
+    expect(await chips.count()).toBeGreaterThan(0);
+    for (const box of await chips.evaluateAll((els) =>
+      els.map((el) => el.getBoundingClientRect().toJSON() as DOMRect),
+    )) {
+      expect(box.left).toBeGreaterThanOrEqual(0);
+      expect(box.right).toBeLessThanOrEqual(viewport?.width ?? 0);
+    }
   });
 
   // AC35

@@ -64,6 +64,14 @@ test.describe("case studies", () => {
     const details = page.locator("details[data-toc='mobile']");
     await expect(details).toBeVisible();
     await details.locator("summary").click();
+    // 44 px touch targets (spec, Space, layout, shape).
+    for (const box of await details
+      .getByRole("link")
+      .evaluateAll((els) =>
+        els.map((el) => el.getBoundingClientRect().height),
+      )) {
+      expect(box).toBeGreaterThanOrEqual(44);
+    }
     await details.getByRole("link", { name: "Outcome" }).click();
     await expect(page).toHaveURL(/#outcome$/);
   });

@@ -23,12 +23,23 @@ describe("update-snapshots workflow", () => {
       /playwright test tests\/e2e\/visual\.spec\.ts --update-snapshots/,
     );
     expect(workflow).toMatch(/git add tests\/e2e\/visual\.spec\.ts-snapshots/);
-    expect(workflow).toMatch(/git push origin HEAD:\$\{\{ inputs\.branch \}\}/);
+    expect(workflow).toMatch(/BRANCH: \$\{\{ inputs\.branch \}\}/);
+    expect(workflow).toMatch(/git push origin "HEAD:\$BRANCH"/);
+  });
+
+  // The branch input reaches scripts only through env (no script injection).
+  it("never interpolates an input straight into a run script", () => {
+    const scripts = workflow
+      .split("\n")
+      .filter((line) => !/^\s*(ref|BRANCH|if):/.test(line));
+    for (const line of scripts) {
+      expect(line).not.toMatch(/\$\{\{\s*inputs\./);
+    }
   });
 
   // AC16: pushes made with GITHUB_TOKEN don't start CI, so it starts CI itself.
   it("re-runs CI on the branch after committing", () => {
-    expect(workflow).toMatch(/gh workflow run ci\.yml --ref/);
+    expect(workflow).toMatch(/gh workflow run ci\.yml --ref "\$BRANCH"/);
     expect(read(".github/workflows/ci.yml")).toMatch(/^\s+workflow_dispatch:/m);
   });
 });

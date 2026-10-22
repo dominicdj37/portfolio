@@ -209,4 +209,38 @@ describe("motion rules", () => {
       );
     }
   });
+
+  // AC21: "in the codebase" includes Tailwind classes in app/ and components/.
+  it("never animates layout properties from component classes", async () => {
+    const { readdirSync, readFileSync } = await import("node:fs");
+    const { join, relative } = await import("node:path");
+    const walk = (dir: string): string[] =>
+      readdirSync(dir, { withFileTypes: true }).flatMap((entry) =>
+        entry.isDirectory()
+          ? walk(join(dir, entry.name))
+          : [join(dir, entry.name)],
+      );
+    const defined = new Set(keyframes().keys());
+    const files = ["app", "components"]
+      .flatMap((dir) => walk(join(process.cwd(), dir)))
+      .filter((file) => /\.tsx?$/.test(file));
+    expect(files.length).toBeGreaterThan(0);
+
+    for (const file of files) {
+      const name = relative(process.cwd(), file);
+      const text = readFileSync(file, "utf8");
+      expect(text, name).not.toMatch(/\btransition-all\b/);
+      for (const match of text.matchAll(/transition-\[([^\]]+)\]/g)) {
+        expect(match[1], `${name}: ${match[0]}`).not.toMatch(
+          /\b(width|height|top|left|right|bottom|margin|padding|inset|all)\b/,
+        );
+      }
+      // Arbitrary animations must use keyframes from globals.css, which the
+      // test above checks.
+      // The keyframe name ends at the first "_" (Tailwind's space).
+      for (const match of text.matchAll(/animate-\[([a-zA-Z0-9-]+)/g)) {
+        expect(defined.has(match[1] ?? ""), `${name}: ${match[0]}`).toBe(true);
+      }
+    }
+  });
 });
