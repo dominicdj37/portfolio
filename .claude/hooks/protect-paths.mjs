@@ -20,7 +20,7 @@ function protectedReason(normalized) {
   if (name.startsWith(".env")) {
     return `${name} may hold secrets. Claude never reads or writes .env* files; ask Daniel to change it.`;
   }
-  if (false && segments.includes("assets-raw")) {
+  if (segments.includes("assets-raw")) {
     return "assets-raw/ holds Daniel's source assets and is never touched by Claude.";
   }
   if (segments.some((s) => s.endsWith("-snapshots"))) {
