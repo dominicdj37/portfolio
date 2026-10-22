@@ -272,14 +272,14 @@ Run at most two agent streams at once, each in its own **git worktree** (for exa
 
 ### Budgets that fail CI
 
-| Budget                                             | Limit           |
-| -------------------------------------------------- | --------------- |
-| Lighthouse mobile performance (home, case study)   | ≥ 90            |
-| Lighthouse accessibility                           | ≥ 95            |
-| Home page JS (script transfer size, Lighthouse CI) | ≤ 150 KB        |
-| `/explore` scene download                          | ≤ 5 MB          |
-| Scene triangles / draw calls                       | ≤ ~150K / ≤ 100 |
-| axe serious/critical violations                    | 0               |
+| Budget                                                  | Limit                              |
+| ------------------------------------------------------- | ---------------------------------- |
+| Lighthouse mobile performance (home, about, case study) | ≥ 90                               |
+| Lighthouse accessibility                                | ≥ 95                               |
+| Home page JS (script transfer size, Lighthouse CI)      | ≤ 300 KB (was 150 KB; site v1, Q2) |
+| `/explore` scene download                               | ≤ 5 MB                             |
+| Scene triangles / draw calls                            | ≤ ~150K / ≤ 100                    |
+| axe serious/critical violations                         | 0                                  |
 
 Start budgets slightly loose if needed and tighten after the first stable release; never loosen them silently in a feature PR.
 

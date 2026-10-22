@@ -8,7 +8,7 @@ Related: docs/plan.md §9, docs/workflow.md §3, docs/specs/sprint-0-foundation.
 The portfolio is a mostly static, content-heavy, mobile-first site (home, four case studies, about, contact). It also has two interactive parts: a Lab with browser demos, and an optional 3D Workspace at `/explore`. Constraints:
 
 - Content must never depend on WebGL. 3D loads only on `/explore` and in the Lab.
-- Mobile budgets: Lighthouse performance ≥ 90 and home-page JS ≤ 150 KB; the 3D scene ≤ 5 MB.
+- Mobile budgets: Lighthouse performance ≥ 90 and home-page JS ≤ 300 KB (was 150 KB; see Amendments); the 3D scene ≤ 5 MB.
 - Case studies are long-form, version-controlled writing.
 - One developer, working mostly through a coding agent, so the stack should be mainstream and well documented, with fast feedback.
 - Preview deploys per PR and a one-click rollback.
@@ -55,3 +55,7 @@ Versions: the latest stable release of each tool at the start of S2, recorded in
 - Hosting is tied to Vercel for preview and rollback. Moving away later means replacing preview-per-PR and the deployment-status smoke trigger.
 - Next.js majors change often (for example, `next lint` was removed). Upgrades get their own `chore/` PR, never mixed with features.
 - Revisit this ADR if the JS budget can't be met with App Router, or if `/explore` needs a different renderer.
+
+## Amendments
+
+- **2026-10-23 — home-page JS budget 300 KB** (docs/specs/site-v1.md, Q2). Daniel raised the budget so site v1 ships first and is optimized later. Lighthouse performance ≥ 90 and accessibility ≥ 95 still gate every PR, and `lighthouserc.json` now also checks `/about` and `/work/casabot`.
