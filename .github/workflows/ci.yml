@@ -4,6 +4,8 @@ on:
   pull_request:
   push:
     branches: [main]
+  # Started by update-snapshots after it commits new baselines.
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
