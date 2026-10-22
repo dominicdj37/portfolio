@@ -21,6 +21,25 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+// Phones (below md) navigate without view transitions: with the sticky card
+// stack (M3), WebKit hangs the navigation (Daniel, 2026-10-23). React checks
+// for document.startViewTransition on every navigation, so hiding it before
+// hydration is enough; it comes back if the viewport widens.
+const NO_PHONE_VIEW_TRANSITIONS = `(function () {
+  var d = document, start = d.startViewTransition;
+  if (!start || !window.matchMedia) return;
+  var phone = window.matchMedia("(max-width: 47.999rem)");
+  function apply() {
+    Object.defineProperty(d, "startViewTransition", {
+      value: phone.matches ? undefined : start,
+      configurable: true,
+      writable: true,
+    });
+  }
+  apply();
+  phone.addEventListener("change", apply);
+})();`;
+
 // The shell lives here, not in each page: with cacheComponents, Next keeps
 // recent routes mounted (hidden), so per-page headers would duplicate ids.
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -30,6 +49,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn(display.variable, sans.variable, mono.variable)}
     >
       <body>
+        <script
+          dangerouslySetInnerHTML={{ __html: NO_PHONE_VIEW_TRANSITIONS }}
+        />
         <SkipLink />
         <Navbar resumeAvailable={resumeAvailable} />
         <main id="main" tabIndex={-1} className="outline-none">

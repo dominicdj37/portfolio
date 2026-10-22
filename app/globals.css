@@ -405,15 +405,6 @@ body::after {
   animation-timing-function: var(--ease-in-out);
 }
 
-/* Phones: the cards are a sticky stack (M3), and WebKit hangs the navigation
-   when a named element inside a sticky card joins a view transition. Drop the
-   name there; the page still cross-fades. Overrides React's inline name. */
-@media (width < 48rem) {
-  [data-cover] {
-    view-transition-name: none !important;
-  }
-}
-
 /* M13: ambient aurora behind the hero (never behind body text). */
 @utility aurora {
   position: absolute;

@@ -429,6 +429,7 @@ Everything ships in **one branch and one PR**, `feat/site-v1` (Daniel, 2026-10-2
 - **Q18 — Content still to come. ✅** Daniel gave the phone number and confirmed the My Tax India URL and the "Side Projects" stars list. The Nexus 3D demo video and product showcase links come from the resume (LNK-5, LNK-6). The four About "engineering principles" (PRN-1–4) are drafts Claude wrote from the resume at Daniel's request; Daniel revises them later. Nothing else is open.
 - **Q19 — `--accent-soft` in light mode is 1.4:1.** **Decided:** keep it as a decorative fill only (chip backgrounds with `--text` on top), never as text or an outline. The colour table now says so.
 - **Q20 — Filled-button colour.** The draft's token table had `--accent-strong` for filled buttons while its notes said `#7C9CF7` (white text on `#547CF3` is 3.8:1). **Decided:** filled buttons use `--accent`, as the notes said; the table is updated to match.
+- **Q21 — Sticky card stack vs view transitions on phones. ✅ Decided by Daniel (2026-10-23, during PR #15): drop view transitions on phones.** On CI's Linux WebKit, tapping a card in the sticky stack (M3) hung the navigation whenever a view transition ran. Below `md`, an inline script in the root layout hides `document.startViewTransition` before hydration, so phones navigate without M12; tablets and desktop keep the morph. AC50's "where supported" now means "from `md` up".
 
 ### Risks
 
