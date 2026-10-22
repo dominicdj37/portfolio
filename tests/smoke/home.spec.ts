@@ -13,7 +13,8 @@ test("deployed home page loads cleanly", async ({ page, baseURL }) => {
 
   // A protected deployment redirects to Vercel's login page, which also
   // answers 200 with a title. Make sure we're still on the site under test.
-  expect(new URL(page.url()).origin).toBe(new URL(baseURL!).origin);
+  expect(baseURL).toBeTruthy();
+  expect(new URL(page.url()).origin).toBe(new URL(baseURL ?? "").origin);
 
   await expect(page).toHaveTitle(/Daniel Dominic/);
 

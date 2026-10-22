@@ -373,12 +373,12 @@ install (pnpm, cached)
 ### Release
 
 1. Daniel merges to `main` → Vercel production deploy.
-2. Post-deploy smoke test: `.github/workflows/smoke.yml` runs `pnpm smoke` against the production domain whenever Vercel reports a successful Production deploy. Sprint 0 checks `/` only; home, one case study, resume download and `/explore` are added as they ship. Run it by hand from Actions → Production smoke → Run workflow (optionally with another URL), or locally with `BASE_URL=<url> pnpm smoke`.
+2. Post-deploy smoke test: `.github/workflows/smoke.yml` runs `pnpm smoke` against the production domain whenever Vercel reports a successful Production deploy. Sprint 0 checks `/` only; home, one case study, resume download and `/explore` are added as they ship. Run it by hand from Actions → Production smoke → Run workflow (optionally with another URL), or locally with `BASE_URL=<url> pnpm smoke` (PowerShell: `$env:BASE_URL="<url>"; pnpm smoke`).
 3. If the smoke test fails, **roll back first, then fix forward**:
    1. **Daniel:** Vercel → project → Deployments → the last good Production deployment → ⋯ → **Instant Rollback**. The production domain serves it within seconds.
    2. Re-run Production smoke by hand and check that it's green.
    3. Claude opens a `fix/*` PR, either `git revert <merge commit>` or a forward fix, through the normal cycle. Nobody pushes to `main` directly.
-   4. **Daniel:** after a rollback, Vercel stops moving the production domain to new deployments. Once the fix is merged and deployed, promote that deployment (⋯ → Promote) so production follows `main` again.
+   4. **Daniel:** after a rollback, Vercel stops moving the production domain to new deployments. Once the fix is merged and deployed, promote that deployment (⋯ → Promote) so production follows `main` again, then re-run Production smoke by hand. Until then, automatic smoke runs check the rolled-back build, not the new deploy.
 4. Tag milestone releases (`v0.1-mvp`, `v0.2-explore`) with a short changelog.
 
 ---

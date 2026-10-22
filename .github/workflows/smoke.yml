@@ -14,8 +14,10 @@ on:
 permissions:
   contents: read
 
+# Vercel sends events for Preview deploys too. Keying on the environment keeps
+# them from cancelling a Production run that's still going.
 concurrency:
-  group: smoke-production
+  group: smoke-${{ github.event.deployment.environment || 'manual' }}
   cancel-in-progress: true
 
 env:
