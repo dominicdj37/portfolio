@@ -19,7 +19,9 @@ Windows dev machine, Linux CI. Use forward slashes and cross-platform Node scrip
 - `pnpm verify:full` = `verify` + `lhci`
 - Phase 4, not yet available: `pnpm assets:optimize` | `pnpm assets:check`
 
-CI (`.github/workflows/ci.yml`) runs `static`, `typecheck`, `unit`, `build`, `e2e` and `lighthouse`. All six are required to merge into `main`.
+CI (`.github/workflows/ci.yml`) runs `static`, `typecheck`, `unit`, `build`, `e2e` and `lighthouse`. All six are required to merge into `main`. On PRs, `e2e` runs the desktop project only; pushes to `main` run android, iphone and desktop. Before a PR that touches mobile UI, run `pnpm e2e:mobile` locally.
+
+While iterating, run only the affected checks (a test file, one Playwright project). Run the full `pnpm verify` once, before the PR.
 
 ## Rules
 
