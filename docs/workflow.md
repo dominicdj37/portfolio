@@ -248,18 +248,18 @@ Run at most two agent streams at once, each in its own **git worktree** (for exa
 
 ## 6. Testing strategy
 
-| Layer             | What it proves                                                   | Tool                                               | Runs                                             |
-| ----------------- | ---------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------ |
-| Static            | Types, lint, formatting                                          | `tsc`, ESLint, Prettier                            | Hooks + CI                                       |
-| Unit              | Data helpers, metadata, project model, quality gate logic        | Vitest                                             | Hooks (changed) + CI (all)                       |
-| Component         | Cards, nav, panels, Architecture Explorer behaviour              | Vitest + Testing Library                           | CI                                               |
-| End-to-end        | Real user journeys (below) on mobile + desktop                   | Playwright                                         | CI on every PR                                   |
-| Visual regression | Layout didn't shift unexpectedly                                 | Playwright screenshots, 3 viewports                | CI on every PR (from Phase 1)                    |
-| Accessibility     | WCAG 2.2 AA basics, keyboard paths                               | axe + Playwright keyboard tests                    | CI on every PR                                   |
-| Performance       | Core Web Vitals proxies, JS budget                               | Lighthouse CI (mobile), bundle check               | CI on every PR                                   |
-| 3D                | Scene loads, hotspots work, fallback works, assets within budget | Playwright (WebGL on and off), asset budget script | CI on PRs touching `/explore` or `public/models` |
-| Content           | No dead links                                                    | Link checker                                       | CI + before release                              |
-| Real device       | Touch feel, frame rate, tilt permission, readability             | Daniel on a mid-range Android phone + iPhone       | Before merging UI work                           |
+| Layer             | What it proves                                                   | Tool                                               | Runs                                                                                                                                           |
+| ----------------- | ---------------------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Static            | Types, lint, formatting                                          | `tsc`, ESLint, Prettier                            | Hooks + CI                                                                                                                                     |
+| Unit              | Data helpers, metadata, project model, quality gate logic        | Vitest                                             | Hooks (changed) + CI (all)                                                                                                                     |
+| Component         | Cards, nav, panels, Architecture Explorer behaviour              | Vitest + Testing Library                           | CI                                                                                                                                             |
+| End-to-end        | Real user journeys (below) on mobile + desktop                   | Playwright                                         | CI on every PR: desktop only. On `main`: Android, iPhone and desktop. Locally: `pnpm verify` runs all three (Daniel, 2026-10-23: CI wait time) |
+| Visual regression | Layout didn't shift unexpectedly                                 | Playwright screenshots, 3 viewports                | CI on every PR (from Phase 1)                                                                                                                  |
+| Accessibility     | WCAG 2.2 AA basics, keyboard paths                               | axe + Playwright keyboard tests                    | CI on every PR                                                                                                                                 |
+| Performance       | Core Web Vitals proxies, JS budget                               | Lighthouse CI (mobile), bundle check               | CI on every PR                                                                                                                                 |
+| 3D                | Scene loads, hotspots work, fallback works, assets within budget | Playwright (WebGL on and off), asset budget script | CI on PRs touching `/explore` or `public/models`                                                                                               |
+| Content           | No dead links                                                    | Link checker                                       | CI + before release                                                                                                                            |
+| Real device       | Touch feel, frame rate, tilt permission, readability             | Daniel on a mid-range Android phone + iPhone       | Before merging UI work                                                                                                                         |
 
 ### Core e2e journeys (must always pass)
 

@@ -77,9 +77,11 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium webkit
+      # PRs run the desktop project only, for speed; pushes to main (and
+      # manual runs) run all three. Daniel, 2026-10-23 (docs/workflow.md §6).
+      - run: pnpm exec playwright install --with-deps ${{ github.event_name == 'pull_request' && 'chromium' || 'chromium webkit' }}
       - run: pnpm build
-      - run: pnpm e2e
+      - run: pnpm e2e ${{ github.event_name == 'pull_request' && '--project=desktop' || '' }}
       - if: failure()
         uses: actions/upload-artifact@v7
         with:
