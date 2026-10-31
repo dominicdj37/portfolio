@@ -1,11 +1,21 @@
-name: CI
+name: Tests
 
+# On demand only: run after a merge and Vercel deploy when Daniel asks.
 on:
-  pull_request:
-  push:
-    branches: [main]
-  # Started by update-snapshots after it commits new baselines.
   workflow_dispatch:
+    inputs:
+      unit:
+        description: Unit tests (Vitest)
+        type: boolean
+        default: true
+      e2e:
+        description: End-to-end tests (Playwright, android/iphone/desktop + axe)
+        type: boolean
+        default: true
+      lighthouse:
+        description: Lighthouse CI (performance, accessibility, JS budget)
+        type: boolean
+        default: true
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -18,32 +28,8 @@ env:
   NEXT_TELEMETRY_DISABLED: 1
 
 jobs:
-  static:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
-        with:
-          node-version-file: .nvmrc
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm format:check
-      - run: pnpm lint
-
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
-        with:
-          node-version-file: .nvmrc
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm typecheck
-
   unit:
+    if: inputs.unit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -55,19 +41,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
-        with:
-          node-version-file: .nvmrc
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build
-
   e2e:
+    if: inputs.e2e
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -88,6 +63,7 @@ jobs:
           retention-days: 14
 
   lighthouse:
+    if: inputs.lighthouse
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
