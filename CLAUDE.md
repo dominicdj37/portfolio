@@ -10,38 +10,21 @@ Windows dev machine, Linux CI. Use forward slashes and cross-platform Node scrip
 ## Commands
 
 - `pnpm dev` | `pnpm build` | `pnpm start`
-- `pnpm typecheck` (`next typegen && tsc --noEmit`) | `pnpm lint` (fails on any warning) | `pnpm format` | `pnpm format:check`
-- `pnpm test` (Vitest, `tests/unit/**`) | `pnpm test --changed`
+- `pnpm typecheck` | `pnpm lint` | `pnpm format`
+- `pnpm test` (Vitest, `tests/unit/**`)
 - `pnpm e2e` (Playwright: android, iphone, desktop) | `pnpm e2e:mobile`. Both run against the production server, so run `pnpm build` first.
-- `pnpm lhci` (Lighthouse CI on `/`, needs a build)
-- `BASE_URL=<url> pnpm smoke`, or `$env:BASE_URL="<url>"; pnpm smoke` in PowerShell (post-deploy smoke test against a deployed site; CI runs it after each Production deploy)
-- `pnpm verify` = `format:check → lint → typecheck → test → build → e2e`
-- `pnpm verify:full` = `verify` + `lhci`
-- Phase 4, not yet available: `pnpm assets:optimize` | `pnpm assets:check`
+- `pnpm lhci` (Lighthouse CI, needs a build)
+- `BASE_URL=<url> pnpm smoke`, or `$env:BASE_URL="<url>"; pnpm smoke` in PowerShell (smoke test against a deployed site)
 
-CI (`.github/workflows/ci.yml`) runs `static`, `typecheck`, `unit`, `build`, `e2e` and `lighthouse`. All six are required to merge into `main`.
+## How we work
 
-## Rules
+1. **Spec first.** Before building a feature, write a spec in docs/specs/ from docs/specs/\_template.md with `Status: Draft` and stop. Build only once Daniel approves it (he changes the Status line to **Approved**, or tells you to). Public content comes from the approved spec.
+2. **ADRs** in docs/adr/ record real decisions (stack, architecture, budgets).
+3. **Tests run on demand only.** Nothing runs automatically in CI. After each feature PR is merged and Vercel has deployed it, ask Daniel whether to run any of: unit (`pnpm test`), e2e (`pnpm e2e`), Lighthouse (`pnpm lhci`), smoke (`pnpm smoke` against production). Run them locally, or through the manual `Tests` and `Production smoke` GitHub workflows.
 
-- Work only from a spec in docs/specs/ whose `Status:` line says **Approved**. Only Daniel sets that.
-  If none exists, write one from docs/specs/\_template.md with `Status: Draft` and stop.
-- Write or update tests before implementation. Never delete, skip or weaken a failing test to get green.
-- Every new gate needs a proof of red: a throwaway commit showing the check fails on a deliberate violation, linked in the PR.
-- Never loosen a budget or threshold silently (lighthouserc.json, lint rules, tsconfig). Propose it in a PR with the reason, and update docs/workflow.md §6 and the ADR.
-- Server components by default; `"use client"` only where interaction needs it. The home page JS budget is 300 KB (was 150 KB; raised by docs/specs/site-v1.md Q2, to optimize later). Next.js + React use ~134 KB of it.
+## Notes
+
+- Server components by default; `"use client"` only where interaction needs it.
 - Next.js 16 differs from older versions. Check the version-matched docs in `node_modules/next/dist/docs/` before using a Next.js API.
-- Public content (numbers, titles, employers, dates, results, links) comes from the Approved spec. Whatever Daniel puts there can ship as written. Never invent anything the spec doesn't give.
-- No new dependency without stating why in the PR description.
-- Keep PRs small: one spec (or one Sprint 0 slice) per PR, on a `feat/*`, `fix/*`, `content/*` or `chore/*` branch, with conventional commits.
-
-## Never
-
-- Push to `main`, merge PRs, or deploy to production. Branch protection enforces the first two.
-- Update visual-regression baselines. Daniel runs the update-snapshots workflow.
-- Read or commit `.env*`, anything from `assets-raw/`, `docs/private/`, or employer-confidential material.
-- Add camera/AR (getUserMedia, WebXR) features. They're out of scope.
-
-## Definition of done
-
-Spec criteria covered by tests · `pnpm verify` green · /self-review clean ·
-PR template complete, with mobile (390 px) and desktop (1440 px) screenshots for UI changes.
+- Don't read `.env*`, `assets-raw/` or `docs/private/`.
+- No camera/AR features (getUserMedia, WebXR). They're out of scope.

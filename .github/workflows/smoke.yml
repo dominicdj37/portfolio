@@ -1,13 +1,7 @@
 name: Production smoke
 
-# S10: after Vercel reports a successful production deploy, check the live site.
-# Vercel reports deploys as a commit status (context "Vercel"), not as GitHub
-# Deployments, so `deployment_status` never fires here. A successful status on
-# a commit that's on main is a production deploy. Deployment URLs are behind
-# Vercel Deployment Protection, so the event is only the trigger: the test runs
-# against the public production domain below.
+# On demand only: check the live site after a production deploy when Daniel asks.
 on:
-  status:
   workflow_dispatch:
     inputs:
       base_url:
@@ -23,13 +17,6 @@ env:
 
 jobs:
   smoke:
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.context == 'Vercel' &&
-       github.event.state == 'success' &&
-       contains(github.event.branches.*.name, 'main'))
-    # On the job, not the workflow: every PR's Vercel status also starts a run,
-    # and only runs that pass the `if` above should join (and cancel) the group.
     concurrency:
       group: smoke-production
       cancel-in-progress: true

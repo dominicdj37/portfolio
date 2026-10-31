@@ -50,7 +50,7 @@ Versions: the latest stable release of each tool at the start of S2, recorded in
 
 ## Consequences
 
-- Client JS has to be watched: `"use client"` only where interaction needs it (a CLAUDE.md rule). The Lighthouse CI script-size budget fails PRs that exceed it.
+- Client JS has to be watched: `"use client"` only where interaction needs it (a CLAUDE.md rule). The Lighthouse CI script-size budget catches overruns when Lighthouse runs (on demand since 2026-10-31; see Amendments).
 - 3D code and assets never reach the home bundle, because of the dynamic import plus route-level separation. Phase 4 adds an e2e check for this.
 - Hosting is tied to Vercel for preview and rollback. Moving away later means replacing preview-per-PR and the deployment-status smoke trigger.
 - Next.js majors change often (for example, `next lint` was removed). Upgrades get their own `chore/` PR, never mixed with features.
@@ -59,3 +59,4 @@ Versions: the latest stable release of each tool at the start of S2, recorded in
 ## Amendments
 
 - **2026-10-23 — home-page JS budget 300 KB** (docs/specs/site-v1.md, Q2). Daniel raised the budget so site v1 ships first and is optimized later. Lighthouse performance ≥ 90 and accessibility ≥ 95 still gate every PR, and `lighthouserc.json` now also checks `/about` and `/work/casabot`.
+- **2026-10-31 — tests on demand** (Daniel). CI no longer runs on pull requests or pushes. Unit, e2e, Lighthouse CI and the production smoke test run only when Daniel asks, after a merge and Vercel deploy (docs/workflow.md §4). The budgets above are unchanged, but they're checked only when Lighthouse runs, not on every PR. Visual-regression screenshots are removed.
