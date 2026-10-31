@@ -76,6 +76,27 @@ test.describe("case studies", () => {
     await expect(page).toHaveURL(/#outcome$/);
   });
 
+  // casabot-case-study AC4: the TOC lists the seven CASABOT sections.
+  test("lists the CASABOT sections in the table of contents", async ({
+    page,
+  }, testInfo) => {
+    await page.goto("/work/casabot");
+    const mobile = isMobile(testInfo.project.name);
+    const toc = page.locator(
+      mobile ? "details[data-toc='mobile']" : "[data-toc='desktop']",
+    );
+    if (mobile) await toc.locator("summary").click();
+    await expect(toc.getByRole("link")).toHaveText([
+      "Context",
+      "My ownership",
+      "Engineering challenge",
+      "Architecture",
+      "Implementation",
+      "Outcome",
+      "Links",
+    ]);
+  });
+
   // AC44
   test("shows a decorative, CSS-only reading-progress bar", async ({
     page,

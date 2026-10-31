@@ -52,17 +52,23 @@ export const projects: Project[] = [
       summary:
         "From architecture to launch: building a production smart-home Android experience, with real-time integrations and a custom mobile AR rendering stack.",
       context:
-        "CASABOT AI Home is a smart-home Android app: real-time smart-device control, a voice and chat assistant, live camera streaming, Matter device onboarding and push notifications.",
+        "CASABOT AI Home is a smart-home Android app: real-time smart-device control, a voice and chat assistant, live camera streaming, push notifications, and secure credential storage with biometric app lock.",
       ownership: [
         "Owned the app end to end as the sole Android engineer: architecture, development, testing and Play Store releases.",
-        "Defined the architecture (Jetpack Compose, MVVM with use cases, Hilt, Room) and set the coding, testing and release standards.",
-        "Led the AR feature, the product's key differentiator: shipped first on SceneView, then re-platformed onto a custom ARCore + Filament engine.",
-        "Coordinated with the backend and iOS teams on API contracts and shared app-behavior documentation.",
+        "Set the coding, testing and release standards and best practices for the Android codebase.",
+        "Coordinated with the backend and iOS teams on API contracts and shared app-behavior documentation, with work tracked in Jira.",
+        "Used agentic AI workflows (Claude Code with MCP tool integrations, custom hooks, ADRs) to speed up development, while owning design, code review and test coverage.",
       ],
+      challenge:
+        "The AR feature was the product's key differentiator. I shipped the first version on the SceneView library, then, after evaluating its limits, re-platformed it onto a custom engine.",
+      architecture:
+        "A single-activity app with a 100% Jetpack Compose UI, MVVM with ViewModel and StateFlow, Hilt and Room.",
+      implementation:
+        "The AR feature runs on a custom multithreaded ARCore + Filament engine. I designed ViewNode, which renders live, touchable Compose UI onto 3D surfaces. For real-time smart-device control, I built capability-driven control UIs with optimistic state updates.",
       outcome: [
         "Took the app from an empty repository to a live product on Google Play.",
-        "Shipped four production releases across QA, internal, closed-testing and production tracks.",
-        "Investigated field issues with Crashlytics and analytics telemetry.",
+        "Managed the release cycle across QA, internal, closed-testing and production tracks.",
+        "Diagnosed crashes and ANRs using Firebase Crashlytics and Android Studio Profiler.",
       ],
     },
   },

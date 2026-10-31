@@ -55,7 +55,7 @@ export const experience: Role[] = [
     highlights: [
       "Sole Android engineer: took the app from an empty repository to a live product.",
       "Shipped the AR feature on SceneView, then re-platformed it onto custom ARCore + Filament.",
-      "Four production releases.",
+      "Managed releases across QA, internal, closed-testing and production tracks.",
     ],
   },
 ];
