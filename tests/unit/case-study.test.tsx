@@ -97,7 +97,9 @@ describe("case-study template", () => {
 
   // casabot-case-study AC4: resume-only content, so no trade-offs or lessons.
   it("renders the seven CASABOT sections", () => {
-    const casabot = projects.find((p) => p.slug === "casabot")!;
+    const casabot = projects.find((p) => p.slug === "casabot");
+    expect(casabot).toBeDefined();
+    if (!casabot) return;
     const { container } = render(
       <CaseStudy project={casabot} next={undefined} />,
     );
