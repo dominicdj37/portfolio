@@ -65,7 +65,7 @@ export const capabilities: Capability[] = [
     title: "Native Android",
     skills: "Kotlin, Jetpack Compose, Coroutines/Flow, Room, Hilt.",
     evidence: {
-      text: "Built the CASABOT AI Home app on Compose, MVVM with use cases, Hilt and Room.",
+      text: "Built the CASABOT AI Home app with a 100% Jetpack Compose UI, MVVM, Hilt and Room.",
       slug: "casabot",
     },
   },
@@ -73,7 +73,7 @@ export const capabilities: Capability[] = [
     title: "Architecture & Product Ownership",
     skills: "MVVM, Clean Architecture, testing, releases.",
     evidence: {
-      text: "Sole Android engineer from an empty repository to four production releases.",
+      text: "Sole Android engineer, from an empty repository to a live product on Google Play.",
       slug: "casabot",
     },
   },
@@ -106,7 +106,7 @@ export const capabilities: Capability[] = [
     skills:
       "GitHub Actions, Crashlytics, Konsist/detekt, ADRs, AI coding workflows.",
     evidence: {
-      text: "Managed QA, internal, closed-testing and production tracks, with Crashlytics telemetry.",
+      text: "Managed QA, internal, closed-testing and production tracks, and diagnosed crashes and ANRs with Crashlytics.",
       slug: "casabot",
     },
   },
