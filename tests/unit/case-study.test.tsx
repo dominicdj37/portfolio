@@ -95,6 +95,24 @@ describe("case-study template", () => {
     expect(bar?.getAttribute("aria-hidden")).toBe("true");
   });
 
+  // casabot-case-study AC4: resume-only content, so no trade-offs or lessons.
+  it("renders the seven CASABOT sections", () => {
+    const casabot = projects.find((p) => p.slug === "casabot")!;
+    const { container } = render(
+      <CaseStudy project={casabot} next={undefined} />,
+    );
+    const ids = [...container.querySelectorAll("section")].map((s) => s.id);
+    expect(ids).toEqual([
+      "context",
+      "ownership",
+      "challenge",
+      "architecture",
+      "implementation",
+      "outcome",
+      "links",
+    ]);
+  });
+
   it("links the next project", () => {
     render(<CaseStudy project={full} next={projects[1]} />);
     expect(
